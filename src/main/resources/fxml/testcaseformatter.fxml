@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.TestCaseFormatterController">
+    <children>
+        <Label layoutX="14.0" layoutY="14.0" opacity="0.5" text="Форматирование тест-кейса для Zephyr for JIRA">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="14.0" layoutY="63.0" text="Неотформатированный тест-кейс" />
+        <Button fx:id="btnFormat" layoutX="12.0" layoutY="244.0" mnemonicParsing="false" onAction="#formatTestCase" prefHeight="25.0" prefWidth="149.0" text="Форматировать" />
+        <Separator layoutX="14.0" layoutY="280.0" prefHeight="1.0" prefWidth="617.0" />
+        <TextArea fx:id="txtaResult" editable="false" layoutX="14.0" layoutY="294.0" prefHeight="305.0" prefWidth="617.0" wrapText="true">
+            <font>
+                <Font name="Times New Roman" size="14.0" />
+            </font></TextArea>
+        <ProgressIndicator fx:id="piIndicator" layoutX="557.0" layoutY="21.0" opacity="0.5" progress="0.0" />
+      <TextArea fx:id="txtaOriginalText" editable="true" layoutX="14.0" layoutY="80.0" prefHeight="150.0" prefWidth="617.0" wrapText="true">
+         <font>
+            <Font name="Times New Roman" size="14.0" />
+         </font>
+      </TextArea>
+    </children>
+</AnchorPane>
