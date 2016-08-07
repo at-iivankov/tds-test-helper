@@ -25,7 +25,10 @@ public class MainApp extends Application {
         Tab tabTestCaseFormatter = new Tab ("FORMAT TEST CASE");
         Parent rootTestCaseFormatter = FXMLLoader.load(getClass().getResource("/fxml/testcaseformatter.fxml"));
         tabTestCaseFormatter.setContent(rootTestCaseFormatter);
-        tabPane.getTabs().addAll(tabTestCaseFormatter);
+        Tab tabReportParser = new Tab ("PARSE REPORT");
+        Parent rootReportParser = FXMLLoader.load(getClass().getResource("/fxml/reportparser.fxml"));
+        tabReportParser.setContent(rootReportParser);
+        tabPane.getTabs().addAll(tabTestCaseFormatter, tabReportParser);
         Scene scene = new Scene(tabPane, 630, 630);
         stage.setScene(scene);
         stage.show();

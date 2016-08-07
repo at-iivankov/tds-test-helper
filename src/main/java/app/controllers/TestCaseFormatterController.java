@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.testcaseformatter.TestCaseFormatterDo;
 import app.testcaseformatter.TestCaseFormatterSrv;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -28,7 +29,10 @@ public class TestCaseFormatterController extends BaseController {
             @Override
             protected Object call() throws Exception {
                 disableElements(true);
-                txtaResult.setText(TestCaseFormatterSrv.formatTestCase(txtaOriginalText.getText()).getFormattedText());
+                TestCaseFormatterDo testCaseFormatterDo = TestCaseFormatterSrv.formatTestCase(txtaOriginalText.getText());
+                if(testCaseFormatterDo != null)
+                    txtaResult.setText(testCaseFormatterDo.getFormattedText());
+                else txtaResult.setText("Во время обработки исходных данных произошла ошибка");
                 disableElements(false);
                 isDone=true;
                 return true;
