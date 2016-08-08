@@ -84,9 +84,9 @@ public class TestCaseFormatterBo {
     private String getBoldText(String text){
         text = text.replace("Пусть ", "*Пусть* ");
         text = text.replace("Когда ", "*Когда* ");
-        text = text.replace("Тогда ", "*Тогда*" );
+        text = text.replace("Тогда ", "*Тогда* " );
         text = text.replace("Если ", "*Если* ");
-        text = text.replace("Тогда ", "*Тогда* ");
+        text = text.replace("То ", "*То* ");
         text = text.replace("К тому же ", "*К тому же* ");
         text = text.replace("И ", "*И* ");
         return text;
