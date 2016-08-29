@@ -21,17 +21,17 @@ public class TestCaseFormatterBo {
     public TestCaseFormatterDo format (){
 
         try {
-
+            originalText = originalText.replace("\n\n", "line_break");
             String[] textArray = originalText.split("\n"); //разбиение тест-кейса на массив строк
 
             boolean isExample = false;
 
             for (int i = 0; i < textArray.length; i++) {
-            /*
-            * Первичное форматирование: удаление пробелов в начале строк, удаление меток, форматирование комментариев
-            */
+                /*
+                * Первичное форматирование: удаление пробелов в начале строк, удаление меток, форматирование комментариев
+                */
                 textArray[i] = textArray[i].replaceAll("^\\s+", "");
-                textArray[i] = textArray[i].replaceAll("^@.*", "");
+                textArray[i] = textArray[i].replace("@atest", "{panel:title=*@atest*|borderStyle=dashed|borderColor=#ccc|titleBGColor=#FFFFCE|bgColor=#FFFFCE}{panel}");
                 if (!textArray[i].equals("") && textArray[i].substring(0, 1).equals("#")) {
                     textArray[i] = "_" + textArray[i] + "_";
                 }
@@ -62,23 +62,23 @@ public class TestCaseFormatterBo {
         } catch (Exception e){
             return null;
         }
-        return new TestCaseFormatterDo(formattedText);
+        return new TestCaseFormatterDo(formattedText.replace("line_break", "\n\n\n\n=========================================\n\n\n\n"));
     }
 
     private void formatScenario(String text){
-        formattedText += "\n\n{panel:title=*Сценарий*}" + getTextByRegularExpression("Сценарий:(.*)", text) + "{panel}\n\n";
+        formattedText += "{panel:title=*Сценарий*}" + getTextByRegularExpression("Сценарий:(.*)", text) + "{panel}\n\n";
     }
 
     private void formatScenarioStructure(String text){
-        formattedText += "\n\n{panel:title=*Структура сценария*}" + getTextByRegularExpression("Структура сценария:(.*)", text) + "{panel}\n\n";
+        formattedText += "{panel:title=*Структура сценария*}" + getTextByRegularExpression("Структура сценария:(.*)", text) + "{panel}\n\n";
     }
 
     private void formatPrehistory(){
-        formattedText += "\n\n{panel:title=*Предыстория*}{panel}\n\n";
+        formattedText += "{panel:title=*Предыстория*}{panel}\n\n";
     }
 
     private void formatExamples(){
-        formattedText += "\n\n{panel}*Примеры*:\n\n";
+        formattedText += "{panel}*Примеры*:\n\n";
     }
 
     private String getBoldText(String text){

@@ -30,6 +30,10 @@ public class ReportParserBo {
         private String testSummary;
         private int stepCount;
         private int passStepCount;
+        private int failStepCount;
+        private int blockedStepCount;
+        private int wipStepCount;
+        private int unexequtedStepCount;
 
         public String getTestSummary() {
             return testSummary;
@@ -55,14 +59,50 @@ public class ReportParserBo {
             this.passStepCount = passStepCount;
         }
 
+        public int getFailStepCount() {
+            return failStepCount;
+        }
+
+        public void setFailStepCount(int failStepCount) {
+            this.failStepCount = failStepCount;
+        }
+
+        public int getBlockedStepCount() {
+            return blockedStepCount;
+        }
+
+        public void setBlockedStepCount(int blockedStepCount) {
+            this.blockedStepCount = blockedStepCount;
+        }
+
+        public int getWipStepCount() {
+            return wipStepCount;
+        }
+
+        public void setWipStepCount(int wipStepCount) {
+            this.wipStepCount = wipStepCount;
+        }
+
+        public int getUnexequtedStepCount() {
+            return unexequtedStepCount;
+        }
+
+        public void setUnexequtedStepCount(int unexequtedStepCount) {
+            this.unexequtedStepCount = unexequtedStepCount;
+        }
+
         public TestScenario(String testSummary){
             this.testSummary = testSummary;
         }
 
-        public TestScenario(String testSummary, int stepCount, int passStepCount){
+        public TestScenario(String testSummary, int stepCount, int passStepCount, int failStepCount, int blockedStepCount, int wipStepCount, int unexequtedStepCount){
             this.testSummary = testSummary;
             this.stepCount = stepCount;
             this.passStepCount = passStepCount;
+            this.failStepCount = failStepCount;
+            this.blockedStepCount = blockedStepCount;
+            this.wipStepCount = wipStepCount;
+            this.unexequtedStepCount = unexequtedStepCount;
         }
     }
 
@@ -121,6 +161,18 @@ public class ReportParserBo {
                         if (resultStep.equals("PASS")) {
                             testScenario.setPassStepCount(testScenario.getPassStepCount() + 1);
                         }
+                        if (resultStep.equals("FAIL")) {
+                            testScenario.setFailStepCount(testScenario.getFailStepCount() + 1);
+                        }
+                        if (resultStep.equals("BLOCKED")) {
+                            testScenario.setBlockedStepCount(testScenario.getBlockedStepCount() + 1);
+                        }
+                        if (resultStep.equals("WIP")) {
+                            testScenario.setWipStepCount(testScenario.getWipStepCount() + 1);
+                        }
+                        if (resultStep.equals("UNEXEQUTED")) {
+                            testScenario.setUnexequtedStepCount(testScenario.getUnexequtedStepCount() + 1);
+                        }
                     }
                     testScenarioList.add(testScenario);
                 }
@@ -168,7 +220,11 @@ public class ReportParserBo {
                         new TestScenario(
                                 testScenario.getTestSummary(),
                                 testScenario.getStepCount(),
-                                testScenario.getPassStepCount()
+                                testScenario.getPassStepCount(),
+                                testScenario.getFailStepCount(),
+                                testScenario.getBlockedStepCount(),
+                                testScenario.getWipStepCount(),
+                                testScenario.getUnexequtedStepCount()
                         )
                 );
             }
@@ -178,7 +234,11 @@ public class ReportParserBo {
                         new TestScenario(
                                 testScenario.getTestSummary(),
                                 testScenarioMap.get(testScenario.getTestSummary()).getStepCount() + testScenario.getStepCount(),
-                                testScenarioMap.get(testScenario.getTestSummary()).getPassStepCount() + testScenario.getPassStepCount()
+                                testScenarioMap.get(testScenario.getTestSummary()).getPassStepCount() + testScenario.getPassStepCount(),
+                                testScenarioMap.get(testScenario.getTestSummary()).getFailStepCount() + testScenario.getFailStepCount(),
+                                testScenarioMap.get(testScenario.getTestSummary()).getBlockedStepCount() + testScenario.getBlockedStepCount(),
+                                testScenarioMap.get(testScenario.getTestSummary()).getWipStepCount() + testScenario.getWipStepCount(),
+                                testScenarioMap.get(testScenario.getTestSummary()).getUnexequtedStepCount() + testScenario.getUnexequtedStepCount()
                         )
                 );
             }
@@ -187,21 +247,42 @@ public class ReportParserBo {
     }
 
     private String getReport(Map<String, TestScenario> reportMap){
-        String result = "Статистика по успешным тест-кейсам: \n\n";
+        String result = "Статистика по выполнению тест-кейсов: \n\n\n";
         int scenarioCounter = 0;
         int passScenarioCounter = 0;
+        int failScenarioCounter = 0;
+        int blockedScenarioCounter = 0;
+        int wipScenarioCounter = 0;
+        int unexequtedScenarioCounter = 0;
+
         for (Map.Entry<String,TestScenario> entry : reportMap.entrySet()) {
-            result += entry.getValue().getTestSummary()
-                    + ": " + entry.getValue().getPassStepCount()
-                    + " из " + entry.getValue().getStepCount()
-                    + " успешно;\n";
+            result += entry.getValue().getTestSummary().toUpperCase()
+                    + ": \n\nall - " + entry.getValue().getStepCount()
+                    + " | pass - " + entry.getValue().getPassStepCount()
+                    + " | fail - " + entry.getValue().getFailStepCount()
+                    + " | blocked - " + entry.getValue().getBlockedStepCount()
+                    + " | wip - " + entry.getValue().getWipStepCount()
+                    + " | unexequted - " + entry.getValue().getUnexequtedStepCount()
+                    + "\n\n=========================================\n\n";
             scenarioCounter += entry.getValue().getStepCount();
             passScenarioCounter += entry.getValue().getPassStepCount();
+            failScenarioCounter += entry.getValue().getFailStepCount();
+            blockedScenarioCounter += entry.getValue().getBlockedStepCount();
+            wipScenarioCounter += entry.getValue().getWipStepCount();
+            unexequtedScenarioCounter += entry.getValue().getUnexequtedStepCount();
         }
-        result +="\n" + "Всего тест-кейсов: "
+        result +="\nВсего тест-кейсов: "
                 + scenarioCounter
-                + "\nУспешных тест-кейсов: "
-                + passScenarioCounter;
+                + "\npass: "
+                + passScenarioCounter
+                + "\nfail: "
+                + failScenarioCounter
+                + "\nblocked: "
+                + blockedScenarioCounter
+                + "\nwip: "
+                + wipScenarioCounter
+                + "\nunexequted: "
+                + unexequtedScenarioCounter;
         return result;
     }
 
