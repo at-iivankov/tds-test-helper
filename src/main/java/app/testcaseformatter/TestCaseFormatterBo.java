@@ -21,7 +21,7 @@ public class TestCaseFormatterBo {
     public TestCaseFormatterDo format (){
 
         try {
-            originalText = originalText.replace("\n\n", "line_break");
+            originalText = originalText.replace("\n\n", "\n\nline_break\n\n");
             String[] textArray = originalText.split("\n"); //разбиение тест-кейса на массив строк
 
             boolean isExample = false;
@@ -31,7 +31,7 @@ public class TestCaseFormatterBo {
                 * Первичное форматирование: удаление пробелов в начале строк, удаление меток, форматирование комментариев
                 */
                 textArray[i] = textArray[i].replaceAll("^\\s+", "");
-                textArray[i] = textArray[i].replace("@atest", "{panel:title=*@atest*|borderStyle=dashed|borderColor=#ccc|titleBGColor=#FFFFCE|bgColor=#FFFFCE}{panel}");
+                textArray[i] = textArray[i].replace("@atest", "*@atest*");
                 if (!textArray[i].equals("") && textArray[i].substring(0, 1).equals("#")) {
                     textArray[i] = "_" + textArray[i] + "_";
                 }
@@ -62,7 +62,7 @@ public class TestCaseFormatterBo {
         } catch (Exception e){
             return null;
         }
-        return new TestCaseFormatterDo(formattedText.replace("line_break", "\n\n\n\n=========================================\n\n\n\n"));
+        return new TestCaseFormatterDo((formattedText.replace("line_break", "\n\n\n\n=========================================\n\n\n\n")).replace("\n\n{panel}\n\n", ""));
     }
 
     private void formatScenario(String text){

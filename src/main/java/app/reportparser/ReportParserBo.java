@@ -33,7 +33,7 @@ public class ReportParserBo {
         private int failStepCount;
         private int blockedStepCount;
         private int wipStepCount;
-        private int unexequtedStepCount;
+        private int unexecutedStepCount;
 
         public String getTestSummary() {
             return testSummary;
@@ -83,12 +83,12 @@ public class ReportParserBo {
             this.wipStepCount = wipStepCount;
         }
 
-        public int getUnexequtedStepCount() {
-            return unexequtedStepCount;
+        public int getUnexecutedStepCount() {
+            return unexecutedStepCount;
         }
 
-        public void setUnexequtedStepCount(int unexequtedStepCount) {
-            this.unexequtedStepCount = unexequtedStepCount;
+        public void setUnexecutedStepCount(int unexecutedStepCount) {
+            this.unexecutedStepCount = unexecutedStepCount;
         }
 
         public TestScenario(String testSummary){
@@ -102,7 +102,7 @@ public class ReportParserBo {
             this.failStepCount = failStepCount;
             this.blockedStepCount = blockedStepCount;
             this.wipStepCount = wipStepCount;
-            this.unexequtedStepCount = unexequtedStepCount;
+            this.unexecutedStepCount = unexequtedStepCount;
         }
     }
 
@@ -170,8 +170,8 @@ public class ReportParserBo {
                         if (resultStep.equals("WIP")) {
                             testScenario.setWipStepCount(testScenario.getWipStepCount() + 1);
                         }
-                        if (resultStep.equals("UNEXEQUTED")) {
-                            testScenario.setUnexequtedStepCount(testScenario.getUnexequtedStepCount() + 1);
+                        if (resultStep.equals("UNEXECUTED")) {
+                            testScenario.setUnexecutedStepCount(testScenario.getUnexecutedStepCount() + 1);
                         }
                     }
                     testScenarioList.add(testScenario);
@@ -224,7 +224,7 @@ public class ReportParserBo {
                                 testScenario.getFailStepCount(),
                                 testScenario.getBlockedStepCount(),
                                 testScenario.getWipStepCount(),
-                                testScenario.getUnexequtedStepCount()
+                                testScenario.getUnexecutedStepCount()
                         )
                 );
             }
@@ -238,7 +238,7 @@ public class ReportParserBo {
                                 testScenarioMap.get(testScenario.getTestSummary()).getFailStepCount() + testScenario.getFailStepCount(),
                                 testScenarioMap.get(testScenario.getTestSummary()).getBlockedStepCount() + testScenario.getBlockedStepCount(),
                                 testScenarioMap.get(testScenario.getTestSummary()).getWipStepCount() + testScenario.getWipStepCount(),
-                                testScenarioMap.get(testScenario.getTestSummary()).getUnexequtedStepCount() + testScenario.getUnexequtedStepCount()
+                                testScenarioMap.get(testScenario.getTestSummary()).getUnexecutedStepCount() + testScenario.getUnexecutedStepCount()
                         )
                 );
             }
@@ -253,7 +253,7 @@ public class ReportParserBo {
         int failScenarioCounter = 0;
         int blockedScenarioCounter = 0;
         int wipScenarioCounter = 0;
-        int unexequtedScenarioCounter = 0;
+        int unexecutedScenarioCounter = 0;
 
         for (Map.Entry<String,TestScenario> entry : reportMap.entrySet()) {
             result += entry.getValue().getTestSummary().toUpperCase()
@@ -262,14 +262,14 @@ public class ReportParserBo {
                     + " | fail - " + entry.getValue().getFailStepCount()
                     + " | blocked - " + entry.getValue().getBlockedStepCount()
                     + " | wip - " + entry.getValue().getWipStepCount()
-                    + " | unexequted - " + entry.getValue().getUnexequtedStepCount()
+                    + " | unexequted - " + entry.getValue().getUnexecutedStepCount()
                     + "\n\n=========================================\n\n";
             scenarioCounter += entry.getValue().getStepCount();
             passScenarioCounter += entry.getValue().getPassStepCount();
             failScenarioCounter += entry.getValue().getFailStepCount();
             blockedScenarioCounter += entry.getValue().getBlockedStepCount();
             wipScenarioCounter += entry.getValue().getWipStepCount();
-            unexequtedScenarioCounter += entry.getValue().getUnexequtedStepCount();
+            unexecutedScenarioCounter += entry.getValue().getUnexecutedStepCount();
         }
         result +="\nВсего тест-кейсов: "
                 + scenarioCounter
@@ -281,8 +281,8 @@ public class ReportParserBo {
                 + blockedScenarioCounter
                 + "\nwip: "
                 + wipScenarioCounter
-                + "\nunexequted: "
-                + unexequtedScenarioCounter;
+                + "\nunexecuted: "
+                + unexecutedScenarioCounter;
         return result;
     }
 
