@@ -29,6 +29,7 @@ public class ReportParserBo {
 
         private String testSummary;
         private int stepCount;
+        private int atestCount;
         private int passStepCount;
         private int failStepCount;
         private int blockedStepCount;
@@ -39,16 +40,20 @@ public class ReportParserBo {
             return testSummary;
         }
 
-        public void setTestSummary(String testSummary) {
-            this.testSummary = testSummary;
-        }
-
         public int getStepCount() {
             return stepCount;
         }
 
         public void setStepCount(int stepCount) {
             this.stepCount = stepCount;
+        }
+
+        public int getAtestCount() {
+            return atestCount;
+        }
+
+        public void setAtestCount(int atestCount) {
+            this.atestCount = atestCount;
         }
 
         public int getPassStepCount() {
@@ -95,9 +100,10 @@ public class ReportParserBo {
             this.testSummary = testSummary;
         }
 
-        public TestScenario(String testSummary, int stepCount, int passStepCount, int failStepCount, int blockedStepCount, int wipStepCount, int unexequtedStepCount){
+        public TestScenario(String testSummary, int stepCount, int atestCount, int passStepCount, int failStepCount, int blockedStepCount, int wipStepCount, int unexequtedStepCount){
             this.testSummary = testSummary;
             this.stepCount = stepCount;
+            this.atestCount = atestCount;
             this.passStepCount = passStepCount;
             this.failStepCount = failStepCount;
             this.blockedStepCount = blockedStepCount;
@@ -117,7 +123,6 @@ public class ReportParserBo {
     public ReportParserDo parse () throws IOException, ParserConfigurationException, SAXException {
 
         List<TestScenario> testScenarioList = new ArrayList<TestScenario>();
-
         try {
 
             String xmlString = getReconstructedXmlReport(originalReport);
@@ -135,6 +140,8 @@ public class ReportParserBo {
 
             // Проходим по всем тестовым сценариям
             for (int i = 0; i < rootNodeList.getLength(); i++) {
+                int atestCounter = 0;
+                boolean isPrehistory = false;
                 Node node = rootNodeList.item(i);
 
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -151,8 +158,17 @@ public class ReportParserBo {
                     NodeList testStepNodeList = ((Element) node).getElementsByTagName("teststep");
                     testScenario.setStepCount(testStepNodeList.getLength());
 
-                    //Проходим по всем тест-кейсом внутри тестового сценария
+                    //Проходим по всем тест-кейсам внутри тестового сценария
                     for (int j = 0; j < testStepNodeList.getLength(); j++) {
+                        // Получаем текст тет-кейса
+                        String stepText = element
+                                .getElementsByTagName("шаг")
+                                .item(j)
+                                .getTextContent();
+                        if (stepText.contains("Предыстория"))
+                            isPrehistory = true;
+                        if (stepText.contains("@atest"))
+                            atestCounter++;
                         // Получаем результат выполнения отдельного тест-кейса внутри тестового сценария
                         String resultStep = element
                                 .getElementsByTagName("Результатшага")
@@ -174,6 +190,9 @@ public class ReportParserBo {
                             testScenario.setUnexecutedStepCount(testScenario.getUnexecutedStepCount() + 1);
                         }
                     }
+                    if (isPrehistory && atestCounter != 0)
+                        atestCounter++;
+                    testScenario.setAtestCount(atestCounter);
                     testScenarioList.add(testScenario);
                 }
             }
@@ -220,6 +239,7 @@ public class ReportParserBo {
                         new TestScenario(
                                 testScenario.getTestSummary(),
                                 testScenario.getStepCount(),
+                                testScenario.getAtestCount(),
                                 testScenario.getPassStepCount(),
                                 testScenario.getFailStepCount(),
                                 testScenario.getBlockedStepCount(),
@@ -234,6 +254,7 @@ public class ReportParserBo {
                         new TestScenario(
                                 testScenario.getTestSummary(),
                                 testScenarioMap.get(testScenario.getTestSummary()).getStepCount() + testScenario.getStepCount(),
+                                testScenarioMap.get(testScenario.getTestSummary()).getAtestCount() + testScenario.getAtestCount(),
                                 testScenarioMap.get(testScenario.getTestSummary()).getPassStepCount() + testScenario.getPassStepCount(),
                                 testScenarioMap.get(testScenario.getTestSummary()).getFailStepCount() + testScenario.getFailStepCount(),
                                 testScenarioMap.get(testScenario.getTestSummary()).getBlockedStepCount() + testScenario.getBlockedStepCount(),
@@ -249,6 +270,7 @@ public class ReportParserBo {
     private String getReport(Map<String, TestScenario> reportMap){
         String result = "Статистика по выполнению тест-кейсов: \n\n\n";
         int scenarioCounter = 0;
+        int atestCounter = 0;
         int passScenarioCounter = 0;
         int failScenarioCounter = 0;
         int blockedScenarioCounter = 0;
@@ -258,6 +280,7 @@ public class ReportParserBo {
         for (Map.Entry<String,TestScenario> entry : reportMap.entrySet()) {
             result += entry.getValue().getTestSummary().toUpperCase()
                     + ": \n\nall - " + entry.getValue().getStepCount()
+                    + " | atest - " + entry.getValue().getAtestCount()
                     + " | pass - " + entry.getValue().getPassStepCount()
                     + " | fail - " + entry.getValue().getFailStepCount()
                     + " | blocked - " + entry.getValue().getBlockedStepCount()
@@ -265,6 +288,7 @@ public class ReportParserBo {
                     + " | unexequted - " + entry.getValue().getUnexecutedStepCount()
                     + "\n\n=========================================\n\n";
             scenarioCounter += entry.getValue().getStepCount();
+            atestCounter += entry.getValue().getAtestCount();
             passScenarioCounter += entry.getValue().getPassStepCount();
             failScenarioCounter += entry.getValue().getFailStepCount();
             blockedScenarioCounter += entry.getValue().getBlockedStepCount();
@@ -273,6 +297,8 @@ public class ReportParserBo {
         }
         result +="\nВсего тест-кейсов: "
                 + scenarioCounter
+                + "\natest: "
+                + atestCounter
                 + "\npass: "
                 + passScenarioCounter
                 + "\nfail: "
@@ -285,10 +311,4 @@ public class ReportParserBo {
                 + unexecutedScenarioCounter;
         return result;
     }
-
-
-
-
-
-
 }
