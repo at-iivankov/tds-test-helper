@@ -28,7 +28,10 @@ public class MainApp extends Application {
         Tab tabReportParser = new Tab ("PARSE REPORT");
         Parent rootReportParser = FXMLLoader.load(getClass().getResource("/fxml/reportparser.fxml"));
         tabReportParser.setContent(rootReportParser);
-        tabPane.getTabs().addAll(tabTestCaseFormatter, tabReportParser);
+        Tab tabOfficeParser = new Tab ("PARSE OFFICES");
+        Parent rootOfficeParser = FXMLLoader.load(getClass().getResource("/fxml/officeparser.fxml"));
+        tabOfficeParser.setContent(rootOfficeParser);
+        tabPane.getTabs().addAll(tabTestCaseFormatter, tabReportParser, tabOfficeParser);
         Scene scene = new Scene(tabPane, 630, 630);
         stage.setScene(scene);
         stage.show();

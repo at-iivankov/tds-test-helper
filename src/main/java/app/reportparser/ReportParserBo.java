@@ -209,9 +209,11 @@ public class ReportParserBo {
         xmlString = xmlString.replace(" ", "");
         xmlString = xmlString.replace("(","_");
         xmlString = xmlString.replace(")","_");
+        xmlString = xmlString.replace("?","_");
+        xmlString = xmlString.replace("&","_");
         xmlString = xmlString.replace("\"<","");
         xmlString = xmlString.replace("\">","");
-        xmlString = xmlString.replace("<?xmlversion=\"1.0\"encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xmlString = xmlString.replace("<_xmlversion=\"1.0\"encoding=\"UTF-8\"_>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         return xmlString;
     }
 

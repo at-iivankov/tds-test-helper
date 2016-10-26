@@ -16,7 +16,21 @@
         <maven.compiler.plugin.source>1.6</maven.compiler.plugin.source>
         <maven.compiler.plugin.target>1.6</maven.compiler.plugin.target>
         <javafx.maven.plugin.version>8.1.2</javafx.maven.plugin.version>
+        <org.apache.poi.version>3.11</org.apache.poi.version>
+        <org.apache.poi.xml.version>3.11-beta2</org.apache.poi.xml.version>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${org.apache.poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${org.apache.poi.xml.version}</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
