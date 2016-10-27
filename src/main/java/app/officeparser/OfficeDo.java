@@ -96,37 +96,31 @@ public class OfficeDo {
     }
 
     public void setMondaySchedule(String mondaySchedule) {
-        this.mondaySchedule = mondaySchedule;
+        this.mondaySchedule = mondaySchedule.replace("нет", "00:00-00:00");
     }
-
 
     public void setTuesdaySchedule(String tuesdaySchedule) {
-        this.tuesdaySchedule = tuesdaySchedule;
+        this.tuesdaySchedule = tuesdaySchedule.replace("нет", "00:00-00:00");
     }
-
 
     public void setWednesdaySchedule(String wednesdaySchedule) {
-        this.wednesdaySchedule = wednesdaySchedule;
+        this.wednesdaySchedule = wednesdaySchedule.replace("нет", "00:00-00:00");
     }
-
 
     public void setThursdaySchedule(String thursdaySchedule) {
-        this.thursdaySchedule = thursdaySchedule;
+        this.thursdaySchedule = thursdaySchedule.replace("нет", "00:00-00:00");
     }
-
 
     public void setFridaySchedule(String fridaySchedule) {
-        this.fridaySchedule = fridaySchedule;
+        this.fridaySchedule = fridaySchedule.replace("нет", "00:00-00:00");
     }
-
 
     public void setSaturdaySchedule(String saturdaySchedule) {
-        this.saturdaySchedule = saturdaySchedule;
+        this.saturdaySchedule = saturdaySchedule.replace("нет", "00:00-00:00");
     }
 
-
     public void setSundaySchedule(String sundaySchedule) {
-        this.sundaySchedule = sundaySchedule;
+        this.sundaySchedule = sundaySchedule.replace("нет", "00:00-00:00");
     }
 
     public String getServiceString() {

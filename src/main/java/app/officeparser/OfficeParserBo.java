@@ -6,7 +6,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -19,6 +18,7 @@ public class OfficeParserBo {
 
     int startScheduleId = 0;
     int startOfficeId = 0;
+    String startOfficePrefix = "impLoc";
 
     List<ScheduleDo> scheduleList = new ArrayList<ScheduleDo>();
     List<ScheduleDo> newScheduleList1 = new ArrayList<ScheduleDo>();
@@ -64,19 +64,7 @@ public class OfficeParserBo {
             while (cellIterator.hasNext()) {
                 columnCounter++;
                 Cell cell = cellIterator.next();
-                int cellType = cell.getCellType();
-                //перебираем возможные типы ячеек
-                switch (cellType) {
-                    case Cell.CELL_TYPE_STRING:
-                        value = cell.getStringCellValue();
-                        break;
-                    case Cell.CELL_TYPE_NUMERIC:
-                        value = "" + cell.getNumericCellValue();
-                        break;
-                    default:
-                        value = "ERROR";
-                        break;
-                }
+                value = getCellValue(cell);
                 if(columnCounter==5)
                     break;
                 if (value.equals("END;"))
@@ -84,7 +72,7 @@ public class OfficeParserBo {
 
                 // 1 столбец - ID, 2 столбец - closeTime, 3 стобец - day, 4 стобец - openTime
                 if (columnCounter == 1)
-                    scheduleDo.setId(Integer.parseInt(value));
+                    scheduleDo.setId(value);
                 if (columnCounter == 2)
                     scheduleDo.setCloseTime(value);
                 if (columnCounter == 3)
@@ -116,19 +104,7 @@ public class OfficeParserBo {
             while (cellIterator.hasNext()) {
                 columnCounter++;
                 Cell cell = cellIterator.next();
-                int cellType = cell.getCellType();
-                //перебираем возможные типы ячеек
-                switch (cellType) {
-                    case Cell.CELL_TYPE_STRING:
-                        value = cell.getStringCellValue();
-                        break;
-                    case Cell.CELL_TYPE_NUMERIC:
-                        value = "" + cell.getNumericCellValue();
-                        break;
-                    default:
-                        value = "ERROR";
-                        break;
-                }
+                value = getCellValue(cell);
                 if(columnCounter==20)
                     break;
                 if (value.equals("END;"))
@@ -217,8 +193,8 @@ public class OfficeParserBo {
                         coincidenceCounter++;
                 }
                 if (coincidenceCounter == 0) {
-                    scheduleList.add(new ScheduleDo(startScheduleId, entry.getKey(), item, "new"));
-                    newScheduleList1.add(new ScheduleDo(startScheduleId, entry.getKey(), item, "new"));
+                    scheduleList.add(new ScheduleDo(startScheduleId + "", entry.getKey(), item, "new"));
+                    newScheduleList1.add(new ScheduleDo(startScheduleId + "", entry.getKey(), item, "new"));
                     startScheduleId ++;
                 }
             }
@@ -252,26 +228,26 @@ public class OfficeParserBo {
         for (OfficeDo office : newOfficeList) {
             String serviceString = "";
             if (office.isService1())
-                serviceString += "100001,";
-            else serviceString += "100002,";
+                serviceString += "impServ100001,";
+            else serviceString += "impServ100002,";
             if (office.isService2())
-                serviceString += "100003,";
-            else serviceString += "100004,";
+                serviceString += "impServ100003,";
+            else serviceString += "impServ100004,";
             if (office.isService3())
-                serviceString += "100005,";
-            else serviceString += "100006,";
+                serviceString += "impServ100005,";
+            else serviceString += "impServ100006,";
             if (office.isService4())
-                serviceString += "100007,";
-            else serviceString += "100008,";
+                serviceString += "impServ100007,";
+            else serviceString += "impServ100008,";
             if (office.isService5())
-                serviceString += "100009,";
-            else serviceString += "100010,";
+                serviceString += "impServ100009,";
+            else serviceString += "impServ100010,";
             if (office.isService6())
-                serviceString += "100011,";
-            else serviceString += "100012,";
+                serviceString += "impServ100011,";
+            else serviceString += "impServ100012,";
             if (office.isService7())
-                serviceString += "100013";
-            else serviceString += "100014";
+                serviceString += "impServ100013";
+            else serviceString += "impServ100014";
 
             office.setServiceString(serviceString);
             newOfficeListFinal.add(office);
@@ -290,7 +266,7 @@ public class OfficeParserBo {
 
         result += "/atg/commerce/locations/SecureLocationRepository:store, , , ,LOCALE=en_US,\nID,name,city,address1,latitude,longitude,locationType,daySchedules,services\n";
         for (OfficeDo office : newOfficeListFinal) {
-            result += startOfficeId
+            result += startOfficePrefix + startOfficeId
                     + ",\"" + office.getName()
                     + "\",\"" + office.getCity()
                     + "\",\"" + office.getAddress()
@@ -310,5 +286,23 @@ public class OfficeParserBo {
         XSSFWorkbook myWorkBook = new XSSFWorkbook (fis);
         XSSFSheet mySheet = myWorkBook.getSheetAt(0);
         return mySheet.iterator();
+    }
+
+    private String getCellValue(Cell cell) {
+        String value;
+        int cellType = cell.getCellType();
+        //перебираем возможные типы ячеек
+        switch (cellType) {
+            case Cell.CELL_TYPE_STRING:
+                value = cell.getStringCellValue();
+                break;
+            case Cell.CELL_TYPE_NUMERIC:
+                value = "" + cell.getNumericCellValue();
+                break;
+            default:
+                value = "ERROR";
+                break;
+        }
+        return value;
     }
 }

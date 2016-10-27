@@ -20,12 +20,12 @@
                 <Font name="Times New Roman" size="14.0" />
             </font></TextArea>
         <ProgressIndicator fx:id="piIndicator" layoutX="557.0" layoutY="21.0" opacity="0.5" progress="0.0" />
-      <TextField fx:id="txtfPathToSchedule" layoutX="15.0" layoutY="80.0" prefHeight="25.0" prefWidth="260.0" />
+      <TextField fx:id="txtfPathToSchedule" layoutX="15.0" layoutY="80.0" prefHeight="25.0" prefWidth="455.0" />
       <Label layoutX="15.0" layoutY="106.0" text="Путь до xlsx списка офисов (шаблон)" />
-      <TextField fx:id="txtfPathToOffices" layoutX="15.0" layoutY="122.0" prefHeight="25.0" prefWidth="260.0" />
-      <Label layoutX="16.0" layoutY="148.0" text="Начальный id для объектов расписания (bcc)" />
-      <TextField fx:id="txtfStartScheduleId" layoutX="15.0" layoutY="164.0" prefHeight="25.0" prefWidth="260.0" />
-      <Label layoutX="16.0" layoutY="191.0" text="Начальный id для объектов офисов (bcc)" />
-      <TextField fx:id="txtfStartOfficeId" layoutX="15.0" layoutY="208.0" prefHeight="25.0" prefWidth="260.0" />
+      <TextField fx:id="txtfPathToOffices" layoutX="15.0" layoutY="122.0" prefHeight="25.0" prefWidth="455.0" />
+      <Label layoutX="16.0" layoutY="148.0" text="Начальный id для объектов расписания (bcc) (impSched - дефолтный префикс id)" />
+      <TextField fx:id="txtfStartScheduleId" layoutX="15.0" layoutY="164.0" prefHeight="25.0" prefWidth="455.0" />
+      <Label layoutX="16.0" layoutY="191.0" text="Начальный id для объектов офисов (bcc) (impLoc - дефолтный префикс id)" />
+      <TextField fx:id="txtfStartOfficeId" layoutX="15.0" layoutY="208.0" prefHeight="25.0" prefWidth="455.0" />
     </children>
 </AnchorPane>

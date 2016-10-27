@@ -7,30 +7,31 @@ package app.officeparser;
  */
 public class ScheduleDo {
 
-    private int id;
+    private String id;
     private String day;
     private String openTime;
     private String closeTime;
     private String timeInterval;
     private String objectType;
+    String startSchedulePrefix = "impSched";
 
     public ScheduleDo() {
     }
 
-    public ScheduleDo(int id, String day, String timeInterval, String objectType) {
-        this.id = id;
+    public ScheduleDo(String id, String day, String timeInterval, String objectType) {
+        this.id = startSchedulePrefix + id;
         this.day = day;
         this.timeInterval = timeInterval;
         this.objectType = objectType;
         calculateOpenAndCloseTime();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = startSchedulePrefix + id;
     }
 
     public String getDay() {
