@@ -7,12 +7,14 @@ public class OfficeParserDo {
 
     private String csvData;
     private String pathToSchedule;
+    private boolean isSetPath;
     private String pathToOffices;
     private int startScheduleId;
     private int startOfficeId;
 
-    public OfficeParserDo(String pathToSchedule, String pathToOffices, int startScheduleId, int startOfficeId) {
+    public OfficeParserDo(String pathToSchedule, boolean isSetPath, String pathToOffices, int startScheduleId, int startOfficeId) {
         this.pathToSchedule = pathToSchedule;
+        this.isSetPath = isSetPath;
         this.pathToOffices = pathToOffices;
         this.startScheduleId = startScheduleId;
         this.startOfficeId = startOfficeId;
@@ -28,6 +30,10 @@ public class OfficeParserDo {
 
     public String getPathToSchedule() {
         return pathToSchedule;
+    }
+
+    public boolean isSetPath() {
+        return isSetPath;
     }
 
     public String getPathToOffices() {

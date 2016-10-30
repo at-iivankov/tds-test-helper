@@ -21,7 +21,7 @@ public class OfficeParserBo {
     String startOfficePrefix = "impLoc";
 
     List<ScheduleDo> scheduleList = new ArrayList<ScheduleDo>();
-    List<ScheduleDo> newScheduleList1 = new ArrayList<ScheduleDo>();
+    List<ScheduleDo> newScheduleList = new ArrayList<ScheduleDo>();
     List<OfficeDo> officeList = new ArrayList<OfficeDo>();
     List<OfficeDo> newOfficeList = new ArrayList<OfficeDo>();
     List<OfficeDo> newOfficeListFinal = new ArrayList<OfficeDo>();
@@ -33,7 +33,8 @@ public class OfficeParserBo {
         startOfficeId = officeParserDo.getStartOfficeId();
 
         // Формируем список из расписаний (таблица из bcc)
-        fillScheduleList(officeParserDo.getPathToSchedule());
+        if (officeParserDo.isSetPath())
+            fillScheduleList(officeParserDo.getPathToSchedule());
         // Формируем список из офисов (таблица-шаблон о бизнеса)
         fillOfficeList(officeParserDo.getPathToOffices());
         // Обновляем раписание и формируем раписание по id у новых офисов
@@ -65,9 +66,9 @@ public class OfficeParserBo {
                 columnCounter++;
                 Cell cell = cellIterator.next();
                 value = getCellValue(cell);
-                if(columnCounter==5)
+                if ((value.equals("ERROR")) && (columnCounter == 1))
                     break;
-                if (value.equals("END;"))
+                if(columnCounter==5)
                     break;
 
                 // 1 столбец - ID, 2 столбец - closeTime, 3 стобец - day, 4 стобец - openTime
@@ -84,7 +85,7 @@ public class OfficeParserBo {
                     scheduleList.add(scheduleDo);
                 }
             }
-            if (value.equals("END;"))
+            if ((value.equals("ERROR")) && (columnCounter == 1))
                 break;
         }
     }
@@ -105,9 +106,9 @@ public class OfficeParserBo {
                 columnCounter++;
                 Cell cell = cellIterator.next();
                 value = getCellValue(cell);
-                if(columnCounter==20)
+                if ((value.equals("ERROR")) && (columnCounter == 1))
                     break;
-                if (value.equals("END;"))
+                if(columnCounter==20)
                     break;
 
                 // 1 столбец - Name, 2 столбец - City, 3 стобец - Address 1, 4 стобец - Geocode, 5 стобец - OfficeDo Type, 6-12 столбцы - ScheduleDo (Monday - Sunday), 13-19 - Service (1-7)
@@ -156,17 +157,16 @@ public class OfficeParserBo {
                     officeList.add(officeDo);
                 }
             }
-            if (value.equals("END;"))
+            if ((value.equals("ERROR")) && (columnCounter == 1))
                 break;
         }
     }
 
     private void appendToScheduleList() {
-        // Формируем общий список раписания (только по новым объектам расписания)
         HashMap<String, List<String>> newScheduleHashMap = new HashMap<String, List<String>>();
         Set<String> set = null;
 
-        // Идем по всем офисам
+        // Формируем список раписания (только по новым объектам расписания)
         for (OfficeDo office : officeList) {
             // Идем по всему расписанию недели
             for (HashMap.Entry<String,String[]> entry : office.getScheduleHashMap().entrySet()) {
@@ -194,7 +194,7 @@ public class OfficeParserBo {
                 }
                 if (coincidenceCounter == 0) {
                     scheduleList.add(new ScheduleDo(startScheduleId + "", entry.getKey(), item, "new"));
-                    newScheduleList1.add(new ScheduleDo(startScheduleId + "", entry.getKey(), item, "new"));
+                    newScheduleList.add(new ScheduleDo(startScheduleId + "", entry.getKey(), item, "new"));
                     startScheduleId ++;
                 }
             }
@@ -256,7 +256,7 @@ public class OfficeParserBo {
 
     private void fillResult() {
         result += "/atg/commerce/locations/SecureLocationRepository:daySchedule, , , ,LOCALE=en_US,\nID,openTime,closeTime,day\n";
-        for (ScheduleDo schedule : newScheduleList1)
+        for (ScheduleDo schedule : newScheduleList)
             result += schedule.getId()
                     + ",\"" + schedule.getOpenTime()
                     + "\",\"" + schedule.getCloseTime()
