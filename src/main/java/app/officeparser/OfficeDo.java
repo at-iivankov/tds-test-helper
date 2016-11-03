@@ -96,31 +96,31 @@ public class OfficeDo {
     }
 
     public void setMondaySchedule(String mondaySchedule) {
-        this.mondaySchedule = mondaySchedule.replace("нет", "00:00-00:00");
+        this.mondaySchedule = mondaySchedule.replace("ERROR", "00:00-00:00");
     }
 
     public void setTuesdaySchedule(String tuesdaySchedule) {
-        this.tuesdaySchedule = tuesdaySchedule.replace("нет", "00:00-00:00");
+        this.tuesdaySchedule = tuesdaySchedule.replace("ERROR", "00:00-00:00");
     }
 
     public void setWednesdaySchedule(String wednesdaySchedule) {
-        this.wednesdaySchedule = wednesdaySchedule.replace("нет", "00:00-00:00");
+        this.wednesdaySchedule = wednesdaySchedule.replace("ERROR", "00:00-00:00");
     }
 
     public void setThursdaySchedule(String thursdaySchedule) {
-        this.thursdaySchedule = thursdaySchedule.replace("нет", "00:00-00:00");
+        this.thursdaySchedule = thursdaySchedule.replace("ERROR", "00:00-00:00");
     }
 
     public void setFridaySchedule(String fridaySchedule) {
-        this.fridaySchedule = fridaySchedule.replace("нет", "00:00-00:00");
+        this.fridaySchedule = fridaySchedule.replace("ERROR", "00:00-00:00");
     }
 
     public void setSaturdaySchedule(String saturdaySchedule) {
-        this.saturdaySchedule = saturdaySchedule.replace("нет", "00:00-00:00");
+        this.saturdaySchedule = saturdaySchedule.replace("ERROR", "00:00-00:00");
     }
 
     public void setSundaySchedule(String sundaySchedule) {
-        this.sundaySchedule = sundaySchedule.replace("нет", "00:00-00:00");
+        this.sundaySchedule = sundaySchedule.replace("ERROR", "00:00-00:00");
     }
 
     public String getServiceString() {
@@ -194,19 +194,19 @@ public class OfficeDo {
     }
 
     public void fillScheduleHashMap() {
-        if (!mondaySchedule.equals("нет"))
+        if (!mondaySchedule.equals("ERROR"))
             scheduleHashMap.put("monday", mondaySchedule.split(";"));
-        if (!tuesdaySchedule.equals("нет"))
+        if (!tuesdaySchedule.equals("ERROR"))
             scheduleHashMap.put("tuesday", tuesdaySchedule.split(";"));
-        if (!wednesdaySchedule.equals("нет"))
+        if (!wednesdaySchedule.equals("ERROR"))
             scheduleHashMap.put("wednesday", wednesdaySchedule.split(";"));
-        if (!thursdaySchedule.equals("нет"))
+        if (!thursdaySchedule.equals("ERROR"))
             scheduleHashMap.put("thursday", thursdaySchedule.split(";"));
-        if (!fridaySchedule.equals("нет"))
+        if (!fridaySchedule.equals("ERROR"))
             scheduleHashMap.put("friday", fridaySchedule.split(";"));
-        if (!saturdaySchedule.equals("нет"))
+        if (!saturdaySchedule.equals("ERROR"))
             scheduleHashMap.put("saturday", saturdaySchedule.split(";"));
-        if (!sundaySchedule.equals("нет"))
+        if (!sundaySchedule.equals("ERROR"))
             scheduleHashMap.put("sunday", sundaySchedule.split(";"));
     }
 }

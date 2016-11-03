@@ -9,13 +9,15 @@ public class OfficeParserDo {
     private String pathToSchedule;
     private boolean isSetPath;
     private String pathToOffices;
+    private String regionCode;
     private int startScheduleId;
     private int startOfficeId;
 
-    public OfficeParserDo(String pathToSchedule, boolean isSetPath, String pathToOffices, int startScheduleId, int startOfficeId) {
+    public OfficeParserDo(String pathToSchedule, boolean isSetPath, String pathToOffices, String regionCode, int startScheduleId, int startOfficeId) {
         this.pathToSchedule = pathToSchedule;
         this.isSetPath = isSetPath;
         this.pathToOffices = pathToOffices;
+        this.regionCode = regionCode;
         this.startScheduleId = startScheduleId;
         this.startOfficeId = startOfficeId;
     }
@@ -38,6 +40,10 @@ public class OfficeParserDo {
 
     public String getPathToOffices() {
         return pathToOffices;
+    }
+
+    public String getRegionCode() {
+        return regionCode;
     }
 
     public int getStartScheduleId() {

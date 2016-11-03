@@ -44,7 +44,7 @@ public class OfficeParserBo {
         // Формируем список сервисов по id у новых офисов
         fillServiceString();
         // Формируем результат
-        fillResult();
+        fillResult(officeParserDo.getRegionCode());
 
         officeParserDo.setCsvData(result);
         return officeParserDo;
@@ -71,15 +71,15 @@ public class OfficeParserBo {
                 if(columnCounter==5)
                     break;
 
-                // 1 столбец - ID, 2 столбец - closeTime, 3 стобец - day, 4 стобец - openTime
+                // 1 столбец - ID, 2 столбец - closeTime, 3 стобец - openTime, 4 стобец - day
                 if (columnCounter == 1)
                     scheduleDo.setId(value);
                 if (columnCounter == 2)
                     scheduleDo.setCloseTime(value);
                 if (columnCounter == 3)
-                    scheduleDo.setDay(value);
-                if (columnCounter == 4) {
                     scheduleDo.setOpenTime(value);
+                if (columnCounter == 4) {
+                    scheduleDo.setDay(value);
                     scheduleDo.setObjectType("old");
                     scheduleDo.calculateTimeInterval();
                     scheduleList.add(scheduleDo);
@@ -102,13 +102,14 @@ public class OfficeParserBo {
             int columnCounter = 0;
             Iterator<Cell> cellIterator = row.cellIterator();
             OfficeDo officeDo = new OfficeDo();
+            String overallSchedule = null;
             while (cellIterator.hasNext()) {
                 columnCounter++;
                 Cell cell = cellIterator.next();
                 value = getCellValue(cell);
                 if ((value.equals("ERROR")) && (columnCounter == 1))
                     break;
-                if(columnCounter==20)
+                if(columnCounter == 21)
                     break;
 
                 // 1 столбец - Name, 2 столбец - City, 3 стобец - Address 1, 4 стобец - Geocode, 5 стобец - OfficeDo Type, 6-12 столбцы - ScheduleDo (Monday - Sunday), 13-19 - Service (1-7)
@@ -136,27 +137,40 @@ public class OfficeParserBo {
                     officeDo.setFridaySchedule(value);
                 if (columnCounter == 11)
                     officeDo.setSaturdaySchedule(value);
-                if (columnCounter == 12) {
+                if (columnCounter == 12)
                     officeDo.setSundaySchedule(value);
-                    officeDo.fillScheduleHashMap();
-                }
                 if (columnCounter == 13)
-                    officeDo.setService1(value);
+                    overallSchedule = value;
                 if (columnCounter == 14)
-                    officeDo.setService2(value);
+                    officeDo.setService1(value);
                 if (columnCounter == 15)
-                    officeDo.setService3(value);
+                    officeDo.setService2(value);
                 if (columnCounter == 16)
-                    officeDo.setService4(value);
+                    officeDo.setService3(value);
                 if (columnCounter == 17)
-                    officeDo.setService5(value);
+                    officeDo.setService4(value);
                 if (columnCounter == 18)
+                    officeDo.setService5(value);
+                if (columnCounter == 19)
                     officeDo.setService6(value);
-                if (columnCounter == 19) {
+                if (columnCounter == 20) {
                     officeDo.setService7(value);
                     officeList.add(officeDo);
                 }
             }
+            if (overallSchedule != null) {
+                if (!overallSchedule.equals("ERROR")) {
+                    officeDo.setMondaySchedule(overallSchedule);
+                    officeDo.setTuesdaySchedule(overallSchedule);
+                    officeDo.setWednesdaySchedule(overallSchedule);
+                    officeDo.setThursdaySchedule(overallSchedule);
+                    officeDo.setFridaySchedule(overallSchedule);
+                    officeDo.setSaturdaySchedule(overallSchedule);
+                    officeDo.setSundaySchedule(overallSchedule);
+                }
+                officeDo.fillScheduleHashMap();
+            }
+
             if ((value.equals("ERROR")) && (columnCounter == 1))
                 break;
         }
@@ -225,6 +239,7 @@ public class OfficeParserBo {
 
     private void fillServiceString() {
         // Заполняем данные по сервисам (список id) для новых офисов
+        //Порядок сервисов: Предоставление детализации, Подключение/отключение городских номеров, Подключение красивых федеральных номеров, Обслуживание корпоративных клиентов, Обслуживание в вечернее время, Работает в выходные, Пополнить счет без комиссии
         for (OfficeDo office : newOfficeList) {
             String serviceString = "";
             if (office.isService1())
@@ -254,20 +269,21 @@ public class OfficeParserBo {
         }
     }
 
-    private void fillResult() {
-        result += "/atg/commerce/locations/SecureLocationRepository:daySchedule, , , ,LOCALE=en_US,\nID,openTime,closeTime,day\n";
+    private void fillResult(String regionCode) {
+        result += "/atg/commerce/locations/SecureLocationRepository:daySchedule, , , ,LOCALE=ru_RU,\nID,openTime,closeTime,day\n";
         for (ScheduleDo schedule : newScheduleList)
             result += schedule.getId()
                     + ",\"" + schedule.getOpenTime()
                     + "\",\"" + schedule.getCloseTime()
-                    + "\"," + schedule.getDay() + "\"\n";
+                    + "\",\"" + schedule.getDay() + "\"\n";
 
         result += "\n\n------------------------------------------------\n\n";
 
-        result += "/atg/commerce/locations/SecureLocationRepository:store, , , ,LOCALE=en_US,\nID,name,city,address1,latitude,longitude,locationType,daySchedules,services\n";
+        result += "/atg/commerce/locations/SecureLocationRepository:store, , , ,LOCALE=ru_RU,\nID,sites,name,city,address1,latitude,longitude,locationType,daySchedules,services\n";
         for (OfficeDo office : newOfficeListFinal) {
             result += startOfficePrefix + startOfficeId
-                    + ",\"" + office.getName()
+                    + ",\"" + regionCode.replace(" ", "")
+                    + "\",\"" + office.getName()
                     + "\",\"" + office.getCity()
                     + "\",\"" + office.getAddress()
                     + "\"," + office.getLatitude()

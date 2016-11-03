@@ -22,6 +22,7 @@ public class OfficeParserController extends BaseController {
     @FXML public TextField txtfPathToSchedule;
     @FXML public CheckBox chbxIsSetPath;
     @FXML public TextField txtfPathToOffices;
+    @FXML public TextField txtfRegionCode;
     @FXML public TextField txtfStartScheduleId;
     @FXML public TextField txtfStartOfficeId;
     @FXML public Button btnParse;
@@ -42,7 +43,7 @@ public class OfficeParserController extends BaseController {
             protected Object call() throws Exception {
                 disableElements(true);
 
-                txtaResult.setText(OfficeParserSrv.parseOffices(new OfficeParserDo(txtfPathToSchedule.getText(), chbxIsSetPath.isSelected(), txtfPathToOffices.getText(), Integer.parseInt(txtfStartScheduleId.getText()), Integer.parseInt(txtfStartOfficeId.getText()))).getCsvData());
+                txtaResult.setText(OfficeParserSrv.parseOffices(new OfficeParserDo(txtfPathToSchedule.getText(), chbxIsSetPath.isSelected(), txtfPathToOffices.getText(), txtfRegionCode.getText(), Integer.parseInt(txtfStartScheduleId.getText()), Integer.parseInt(txtfStartOfficeId.getText()))).getCsvData());
 
                 disableElements(false);
                 isDone=true;
@@ -64,6 +65,7 @@ public class OfficeParserController extends BaseController {
             txtfPathToSchedule.setDisable(isDisable);
         chbxIsSetPath.setDisable(isDisable);
         txtfPathToOffices.setDisable(isDisable);
+        txtfRegionCode.setDisable(isDisable);
         txtfStartScheduleId.setDisable(isDisable);
         txtfStartOfficeId.setDisable(isDisable);
         btnParse.setDisable(isDisable);

@@ -28,5 +28,7 @@
       <Label layoutX="16.0" layoutY="191.0" text="Начальный id для объектов офисов (bcc) (impLoc - дефолтный префикс id)" />
       <TextField fx:id="txtfStartOfficeId" layoutX="15.0" layoutY="208.0" prefHeight="25.0" prefWidth="455.0" />
       <CheckBox fx:id="chbxIsSetPath" layoutX="484.0" layoutY="84.0" mnemonicParsing="false" onAction="#selectCheckBox" text="Указать путь к файлу" />
+      <TextField fx:id="txtfRegionCode" layoutX="484.0" layoutY="122.0" prefHeight="25.0" prefWidth="136.0" />
+      <Label layoutX="484.0" layoutY="106.0" text="Код региона" />
     </children>
 </AnchorPane>
