@@ -239,30 +239,33 @@ public class OfficeParserBo {
 
     private void fillServiceString() {
         // Заполняем данные по сервисам (список id) для новых офисов
-        //Порядок сервисов: Предоставление детализации, Подключение/отключение городских номеров, Подключение красивых федеральных номеров, Обслуживание корпоративных клиентов, Обслуживание в вечернее время, Работает в выходные, Пополнить счет без комиссии
+        // Порядок сервисов:
+        // Предоставление детализации, Подключение/отключение городских номеров,
+        // Подключение красивых федеральных номеров, Обслуживание корпоративных клиентов,
+        // Обслуживание в вечернее время, Работает в выходные, Пополнить счет без комиссии
         for (OfficeDo office : newOfficeList) {
             String serviceString = "";
             if (office.isService1())
-                serviceString += "impServ100001,";
-            else serviceString += "impServ100002,";
+                serviceString += "100001,";
+            else serviceString += "100002,";
             if (office.isService2())
-                serviceString += "impServ100003,";
-            else serviceString += "impServ100004,";
+                serviceString += "100003,";
+            else serviceString += "100004,";
             if (office.isService3())
-                serviceString += "impServ100005,";
-            else serviceString += "impServ100006,";
+                serviceString += "100005,";
+            else serviceString += "100006,";
             if (office.isService4())
-                serviceString += "impServ100007,";
-            else serviceString += "impServ100008,";
+                serviceString += "100007,";
+            else serviceString += "100008,";
             if (office.isService5())
-                serviceString += "impServ100009,";
-            else serviceString += "impServ100010,";
+                serviceString += "100009,";
+            else serviceString += "100010,";
             if (office.isService6())
-                serviceString += "impServ100011,";
-            else serviceString += "impServ100012,";
+                serviceString += "100011,";
+            else serviceString += "100012,";
             if (office.isService7())
-                serviceString += "impServ100013";
-            else serviceString += "impServ100014";
+                serviceString += "100013";
+            else serviceString += "100014";
 
             office.setServiceString(serviceString);
             newOfficeListFinal.add(office);

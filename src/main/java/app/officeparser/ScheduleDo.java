@@ -1,8 +1,6 @@
 package app.officeparser;
 
 /**
- * <Description>
- *
  * @author Ivan Ivankov {@literal <iivankov@at-consulting.ru>}
  */
 public class ScheduleDo {
@@ -31,7 +29,7 @@ public class ScheduleDo {
     }
 
     public void setId(String id) {
-        this.id = startSchedulePrefix + id;
+        this.id = id;
     }
 
     public String getDay() {

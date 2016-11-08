@@ -3,8 +3,6 @@ package app.officeparser;
 import java.util.HashMap;
 
 /**
- * <Description>
- *
  * @author Ivan Ivankov {@literal <iivankov@at-consulting.ru>}
  */
 public class OfficeDo {
