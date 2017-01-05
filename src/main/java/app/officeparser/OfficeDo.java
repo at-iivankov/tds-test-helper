@@ -94,31 +94,59 @@ public class OfficeDo {
     }
 
     public void setMondaySchedule(String mondaySchedule) {
-        this.mondaySchedule = mondaySchedule.replace("ERROR", "00:00-00:00");
+        mondaySchedule = mondaySchedule.replace("-0:00", "-24:00");
+        mondaySchedule = mondaySchedule.replace("-00:00", "-24:00");
+        mondaySchedule = mondaySchedule.replace("ERROR", "00:00-00:00");
+        mondaySchedule = mondaySchedule.replace("\n", "");
+        this.mondaySchedule = mondaySchedule.replace(" ", "");
     }
 
     public void setTuesdaySchedule(String tuesdaySchedule) {
-        this.tuesdaySchedule = tuesdaySchedule.replace("ERROR", "00:00-00:00");
+        tuesdaySchedule = tuesdaySchedule.replace("-0:00", "-24:00");
+        tuesdaySchedule = tuesdaySchedule.replace("-00:00", "-24:00");
+        tuesdaySchedule = tuesdaySchedule.replace("ERROR", "00:00-00:00");
+        tuesdaySchedule = tuesdaySchedule.replace("\n", "");
+        this.tuesdaySchedule = tuesdaySchedule.replace(" ", "");
     }
 
     public void setWednesdaySchedule(String wednesdaySchedule) {
-        this.wednesdaySchedule = wednesdaySchedule.replace("ERROR", "00:00-00:00");
+        wednesdaySchedule = wednesdaySchedule.replace("-0:00", "-24:00");
+        wednesdaySchedule = wednesdaySchedule.replace("-00:00", "-24:00");
+        wednesdaySchedule = wednesdaySchedule.replace("ERROR", "00:00-00:00");
+        wednesdaySchedule = wednesdaySchedule.replace("\n", "");
+        this.wednesdaySchedule = wednesdaySchedule.replace(" ", "");
     }
 
     public void setThursdaySchedule(String thursdaySchedule) {
-        this.thursdaySchedule = thursdaySchedule.replace("ERROR", "00:00-00:00");
+        thursdaySchedule = thursdaySchedule.replace("-0:00", "-24:00");
+        thursdaySchedule = thursdaySchedule.replace("-00:00", "-24:00");
+        thursdaySchedule = thursdaySchedule.replace("ERROR", "00:00-00:00");
+        thursdaySchedule = thursdaySchedule.replace("\n", "");
+        this.thursdaySchedule = thursdaySchedule.replace(" ", "");
     }
 
     public void setFridaySchedule(String fridaySchedule) {
-        this.fridaySchedule = fridaySchedule.replace("ERROR", "00:00-00:00");
+        fridaySchedule = fridaySchedule.replace("-0:00", "-24:00");
+        fridaySchedule = fridaySchedule.replace("-00:00", "-24:00");
+        fridaySchedule = fridaySchedule.replace("ERROR", "00:00-00:00");
+        fridaySchedule = fridaySchedule.replace("\n", "");
+        this.fridaySchedule = fridaySchedule.replace(" ", "");
     }
 
     public void setSaturdaySchedule(String saturdaySchedule) {
-        this.saturdaySchedule = saturdaySchedule.replace("ERROR", "00:00-00:00");
+        saturdaySchedule = saturdaySchedule.replace("-0:00", "-24:00");
+        saturdaySchedule = saturdaySchedule.replace("-00:00", "-24:00");
+        saturdaySchedule = saturdaySchedule.replace("ERROR", "00:00-00:00");
+        saturdaySchedule = saturdaySchedule.replace("\n", "");
+        this.saturdaySchedule = saturdaySchedule.replace(" ", "");
     }
 
     public void setSundaySchedule(String sundaySchedule) {
-        this.sundaySchedule = sundaySchedule.replace("ERROR", "00:00-00:00");
+        sundaySchedule = sundaySchedule.replace("-0:00", "-24:00");
+        sundaySchedule = sundaySchedule.replace("-00:00", "-24:00");
+        sundaySchedule = sundaySchedule.replace("ERROR", "00:00-00:00");
+        sundaySchedule = sundaySchedule.replace("\n", "");
+        this.sundaySchedule = sundaySchedule.replace(" ", "");
     }
 
     public String getServiceString() {

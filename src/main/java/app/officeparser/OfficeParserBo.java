@@ -273,12 +273,12 @@ public class OfficeParserBo {
     }
 
     private void fillResult(String regionCode) {
-        result += "/atg/commerce/locations/SecureLocationRepository:daySchedule, , , ,LOCALE=ru_RU,\nID,openTime,closeTime,day\n";
+        result += "/atg/commerce/locations/SecureLocationRepository:daySchedule, , , ,LOCALE=ru_RU,\nID,closeTime,openTime,day\n";
         for (ScheduleDo schedule : newScheduleList)
             result += schedule.getId()
-                    + ",\"" + schedule.getOpenTime()
-                    + "\",\"" + schedule.getCloseTime()
-                    + "\",\"" + schedule.getDay() + "\"\n";
+                    + "," + schedule.getCloseTime()
+                    + "," + schedule.getOpenTime()
+                    + "," + schedule.getDay() + "\n";
 
         result += "\n\n------------------------------------------------\n\n";
 
