@@ -23,62 +23,48 @@ public class TestCaseFormatterBo {
         try {
             originalText = originalText.replace("\n\n", "\n\nline_break\n\n");
             String[] textArray = originalText.split("\n"); //разбиение тест-кейса на массив строк
-
+            int testCaseCounter = 0;
             boolean isExample = false;
 
             for (int i = 0; i < textArray.length; i++) {
                 /*
-                * Первичное форматирование: удаление пробелов в начале строк, удаление меток, форматирование комментариев
+                * Первичное форматирование: удаление пробелов в начале строк, выделение меток, форматирование комментариев
                 */
                 textArray[i] = textArray[i].replaceAll("^\\s+", "");
-                textArray[i] = textArray[i].replace("@atest", "*@atest*");
+                textArray[i] = textArray[i].contains("@atest") ? "*" + textArray[i] + "*" : textArray[i];
                 if (!textArray[i].equals("") && textArray[i].substring(0, 1).equals("#")) {
                     textArray[i] = "_" + textArray[i] + "_";
                 }
 
                 if (textArray[i].contains("Сценарий:")) {
-                    formatScenario(textArray[i]);
+                    formatScenario(textArray[i], ++testCaseCounter);
                 } else if (textArray[i].contains("Структура сценария:")) {
-                    formatScenarioStructure(textArray[i]);
+                    formatScenarioStructure(textArray[i], ++testCaseCounter);
                 } else if (textArray[i].contains("Предыстория:")) {
                     formatPrehistory();
                 } else {
-                    if (textArray[i].contains("Примеры:")) {
-                        isExample = true;
-                        formatExamples();
-                    } else if (isExample) {
-                        if (!textArray[i].contains("|") || i == textArray.length - 1) {
-                            isExample = false;
-                            formattedText += textArray[i] + "{panel}\n\n";
-                        } else formattedText += textArray[i] + "\n";
-                    } else {
-                        textArray[i] = getBoldText(textArray[i]);
-                        if (!textArray[i].equals("")) {
-                            formattedText += "{panel}" + textArray[i] + "{panel}\n\n";
-                        }
+                    textArray[i] = getBoldText(textArray[i]);
+                    if (!textArray[i].equals("")) {
+                        formattedText += textArray[i] + "\n";
                     }
                 }
             }
         } catch (Exception e){
             return null;
         }
-        return new TestCaseFormatterDo((formattedText.replace("line_break", "\n\n\n\n=========================================\n\n\n\n")).replace("\n\n{panel}\n\n", ""));
+        return new TestCaseFormatterDo((formattedText.replace("line_break", "{panel}\n\n")) + "{panel}");
     }
 
-    private void formatScenario(String text){
-        formattedText += "{panel:title=*Сценарий*}" + getTextByRegularExpression("Сценарий:(.*)", text) + "{panel}\n\n";
+    private void formatScenario(String text, int testCaseCounter){
+        formattedText += "{panel:title=Test Case " + testCaseCounter + ": " + getTextByRegularExpression("Сценарий:(.*)", text) + "|borderStyle=dashed|borderColor=#ccc|titleBGColor=#F7D6C1|bgColor=#FFFFCE}\n";
     }
 
-    private void formatScenarioStructure(String text){
-        formattedText += "{panel:title=*Структура сценария*}" + getTextByRegularExpression("Структура сценария:(.*)", text) + "{panel}\n\n";
+    private void formatScenarioStructure(String text, int testCaseCounter){
+        formattedText += "{panel:title=Test Case " + testCaseCounter + ": " + getTextByRegularExpression("Структура сценария:(.*)", text) + "|borderStyle=dashed|borderColor=#ccc|titleBGColor=#F7D6C1|bgColor=#FFFFCE}\n";
     }
 
     private void formatPrehistory(){
-        formattedText += "{panel:title=*Предыстория*}{panel}\n\n";
-    }
-
-    private void formatExamples(){
-        formattedText += "{panel}*Примеры*:\n\n";
+        formattedText += "{panel:title=Предыстория|borderStyle=dashed|borderColor=#ccc|titleBGColor=#F7D6C1|bgColor=#FFFFCE}\n";
     }
 
     private String getBoldText(String text){
@@ -90,6 +76,7 @@ public class TestCaseFormatterBo {
         text = text.replace("К тому же ", "*К тому же* ");
         text = text.replace("А также ", "*А также* ");
         text = text.replace("И ", "*И* ");
+        text = text.replace("Примеры:", "*Примеры:*");
         return text;
     }
 
