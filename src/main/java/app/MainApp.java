@@ -47,7 +47,7 @@ public class MainApp extends Application {
         Parent rootTariffParser = FXMLLoader.load(getClass().getResource("/fxml/tariffparser.fxml"));
         tabTariffParser.setContent(rootTariffParser);
 
-        tabPane.getTabs().addAll(tabTestCaseFormatter, tabReportParser, tabOfficeParser, tabNewsParser, tabOptionParser, tabTariffParser);
+        tabPane.getTabs().addAll(tabTestCaseFormatter, tabReportParser, tabOfficeParser, tabNewsParser, tabTariffParser, tabOptionParser);
         Scene scene = new Scene(tabPane, 630, 630);
         stage.setScene(scene);
         stage.show();

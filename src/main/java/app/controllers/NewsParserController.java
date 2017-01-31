@@ -40,7 +40,7 @@ public class NewsParserController extends BaseController {
             protected Object call() throws Exception {
                 disableElements(true);
 
-                txtaResult.setText(NewsParserSrv.parseNews(new NewsParserDo(txtfPathToXlsx.getText(), chbxIsFederal.isSelected(), Integer.parseInt(txtfStartId.getText()))).getCsvData());
+                txtaResult.setText(NewsParserSrv.parseNews(new NewsParserDo(txtfPathToXlsx.getText(), chbxIsFederal.isSelected(), txtfStartId.getText())).getCsvData());
 
                 disableElements(false);
                 isDone=true;

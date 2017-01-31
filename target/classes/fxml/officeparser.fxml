@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.OfficeParserController">
+    <children>
+        <Label layoutX="14.0" layoutY="14.0" opacity="0.5" text="Парсинг офисов продаж">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="15.0" layoutY="63.0" text="Путь до xlsx расписания (bcc)" />
+        <Button fx:id="btnParse" layoutX="12.0" layoutY="244.0" mnemonicParsing="false" onAction="#parseOffice" prefHeight="25.0" prefWidth="149.0" text="Распарсить" />
+        <Separator layoutX="14.0" layoutY="280.0" prefHeight="1.0" prefWidth="617.0" />
+        <TextArea fx:id="txtaResult" editable="false" layoutX="14.0" layoutY="294.0" prefHeight="305.0" prefWidth="617.0" text="" wrapText="true">
+            <font>
+                <Font name="Times New Roman" size="14.0" />
+            </font></TextArea>
+        <ProgressIndicator fx:id="piIndicator" layoutX="557.0" layoutY="21.0" opacity="0.5" progress="0.0" />
+      <TextField fx:id="txtfPathToSchedule" layoutX="15.0" layoutY="80.0" prefHeight="25.0" prefWidth="455.0" />
+      <Label layoutX="15.0" layoutY="106.0" text="Путь до xlsx списка офисов (шаблон)" />
+      <TextField fx:id="txtfPathToOffices" layoutX="15.0" layoutY="122.0" prefHeight="25.0" prefWidth="455.0" />
+      <Label layoutX="16.0" layoutY="148.0" text="Начальный id для объектов расписания (bcc) (impSched - дефолтный префикс id)" />
+      <TextField fx:id="txtfStartScheduleId" layoutX="15.0" layoutY="164.0" prefHeight="25.0" prefWidth="455.0" />
+      <Label layoutX="16.0" layoutY="191.0" text="Начальный id для объектов офисов (bcc) (impLoc - дефолтный префикс id)" />
+      <TextField fx:id="txtfStartOfficeId" layoutX="15.0" layoutY="208.0" prefHeight="25.0" prefWidth="455.0" />
+      <CheckBox fx:id="chbxIsSetPath" layoutX="484.0" layoutY="84.0" mnemonicParsing="false" onAction="#selectCheckBox" text="Указать путь к файлу" />
+      <TextField fx:id="txtfRegionCode" layoutX="484.0" layoutY="122.0" prefHeight="25.0" prefWidth="136.0" />
+      <Label layoutX="484.0" layoutY="106.0" text="Код региона" />
+    </children>
+</AnchorPane>

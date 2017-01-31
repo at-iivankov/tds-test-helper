@@ -1,16 +1,7 @@
 package app.newsmigration;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.text.ParseException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,90 +11,70 @@ import java.util.List;
  */
 public class NewsParserBo {
 
-    public NewsParserDo parse(NewsParserDo newsData) throws IOException, ParseException {
-        Iterator<Row> rowIterator = getXlsxIterator(newsData.getPathToNews());
-        String value = "";
+    public NewsParserDo parse(NewsParserDo newsData) throws Exception {
+        String csvFile = newsData.getPathToNews();
+        String line = "";
+        String cvsSplitBy = ";";
+        String idPrefix = "news";
+        int idCounter = Integer.parseInt(newsData.getId());
+        int columnCount = 8;
         int rowCounter = 0;
+        String errorCounter = "";
+
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(csvFile));
         List<NewsParserDo> newsParserDoList = new ArrayList<NewsParserDo>();
-        while (rowIterator.hasNext()) {
-            rowCounter++;
-            Row row = rowIterator.next();
-            int columnCounter = 0;
-            Iterator<Cell> cellIterator = row.cellIterator();
-            NewsParserDo newsParserDo = new NewsParserDo();
-            try {
-                while (cellIterator.hasNext()) {
-                    columnCounter++;
-                    Cell cell = cellIterator.next();
-                    value = getCellValue(cell);
-                    if ((value.equals("ERROR")) && (columnCounter == 1))
-                        break;
-                    if (columnCounter == 6)
-                        break;
-
-                    if (columnCounter == 1)
-                        newsParserDo.setHeadline(value);
-                    if (columnCounter == 2)
-                        newsParserDo.setPostDate(value);
-                    if (columnCounter == 3)
-                        newsParserDo.setBody(value);
-                    if (columnCounter == 4)
-                        newsParserDo.setDescription(value);
-                    if (columnCounter == 5) {
-                        newsParserDo.setSlug(value);
-                        newsParserDoList.add(newsParserDo);
-                    }
-                }
-            } catch (Exception e) {
-                newsParserDo.setStrNumber(rowCounter);
+        while ((line = bufferedReader.readLine()) != null) {
+            if(rowCounter == 0) {
+               rowCounter++;
+               continue;
             }
-            if ((value.equals("ERROR")) && (columnCounter == 1))
-                break;
+            rowCounter++;
+            NewsParserDo newsParserDo = new NewsParserDo();
+            String[] row = null;
+            try {
+                row = line.split(cvsSplitBy);
+            } catch (Exception e) {
+                continue;
+            }
+            if(row == null || row.length != columnCount) {
+                errorCounter += rowCounter + ", ";
+                continue;
+            }
+            try {
+                newsParserDo.setId(idPrefix + idCounter);
+                newsParserDo.setName(row[0]);
+                newsParserDo.setHeadline(row[0]);
+                newsParserDo.setBody(row[3]);
+                newsParserDo.setDescription(row[4]);
+                newsParserDo.setSlug(row[6]);
+                newsParserDo.setPostDate(row[6]);
+                newsParserDo.setFederal(newsData.isFederal());
+                newsParserDo.setSiteIds(row[7]);
+                if(newsParserDo.getSiteIds() != null) {
+                    newsParserDoList.add(newsParserDo);
+                    idCounter++;
+                } else continue;
+            }catch (Exception e) {
+                errorCounter += rowCounter + ", ";
+                continue;
+            }
         }
-
-        String result = "";
-        result += "/atg/content/SecureContentManagementRepository:newsArticle, ,TIMEFORMAT=dd.MM.yyyy H:mm, ,LOCALE=ru_RU,\n" +
-                "ID,postDate,headline,abstract,siteIds,body,isFederal,slug\n";
-        int startId = newsData.getId();
+        String result = "/atg/content/SecureContentManagementRepository:newsArticle, ,TIMEFORMAT=dd.MM.yyyy H:mm, ,LOCALE=ru_RU,\n" +
+                "ID,name,headline,body,abstract,postDate,siteIds,slug,isFederal\n";
         for(NewsParserDo newsParserDo : newsParserDoList) {
-            if(newsParserDo.getStrNumber() == 0 && newsParserDo.getSiteIds() != null)
-                result += "\"" + "news" + (startId++) + "\"," + "\"" + newsParserDo.getPostDate() + "\"," + "\"" +
-                        newsParserDo.getHeadline() + "\"," + "\"" + newsParserDo.getDescription() + "\"," +
-                        "\"" + newsParserDo.getSiteIds() + "\"," + "\"" + newsParserDo.getBody() + "\"," +
-                        newsParserDo.isFederal() + ",\"" + newsParserDo.getSlug() + "\"\n";
+            result += newsParserDo.getId() +
+                    ",\"" + newsParserDo.getName() + "\"," +
+                    "\"" + newsParserDo.getHeadline() + "\"," +
+                    "\"" + newsParserDo.getBody() + "\"," +
+                    ((newsParserDo.getDescription().equals("")) ? "," : "\"" + newsParserDo.getDescription() + "\",") +
+                    "\"" + newsParserDo.getPostDate()    + "\"," +
+                    "\"" + newsParserDo.getSiteIds() + "\"," +
+                    "\"" + newsParserDo.getSlug() + "\"," +
+                    newsParserDo.isFederal() +
+                    "\n";
         }
-        result += "\n\n\n\nERROR STRING NUMBERS:\n\n";
-        for(NewsParserDo newsParserDo : newsParserDoList) {
-            if(newsParserDo.getStrNumber() != 0 && newsParserDo.getSiteIds() != null)
-                result += newsParserDo.getStrNumber() + ", ";
-        }
+        result += "ERRORS ROW NUMBER: " + errorCounter;
         newsData.setCsvData(result);
         return newsData;
-    }
-
-    private Iterator<Row> getXlsxIterator(String path) throws IOException {
-        File myFile = new File(path);
-        FileInputStream fis = new FileInputStream(myFile);
-        XSSFWorkbook myWorkBook = new XSSFWorkbook (fis);
-        XSSFSheet mySheet = myWorkBook.getSheetAt(0);
-        return mySheet.iterator();
-    }
-
-    private String getCellValue(Cell cell) {
-        String value;
-        int cellType = cell.getCellType();
-        //перебираем возможные типы ячеек
-        switch (cellType) {
-            case Cell.CELL_TYPE_STRING:
-                value = cell.getStringCellValue();
-                break;
-            case Cell.CELL_TYPE_NUMERIC:
-                value = "" + cell.getNumericCellValue();
-                break;
-            default:
-                value = "ERROR";
-                break;
-        }
-        return value;
     }
 }

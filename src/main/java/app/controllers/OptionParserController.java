@@ -37,7 +37,7 @@ public class OptionParserController extends BaseController {
             protected Object call() throws Exception {
                 disableElements(true);
 
-                txtaResult.setText(OptionParserSrv.parseOption(new OptionParserDo(txtfPathToXlsx.getText(), Integer.parseInt(txtfStartId.getText()))).getCsvData());
+                txtaResult.setText(OptionParserSrv.parseOption(new OptionParserDo(txtfPathToXlsx.getText(), txtfStartId.getText())).getCsvData());
 
                 disableElements(false);
                 isDone=true;

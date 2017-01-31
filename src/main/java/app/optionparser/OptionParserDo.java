@@ -10,49 +10,42 @@ import org.apache.commons.codec.binary.Base64;
 public class OptionParserDo {
 
     private String pathToOption;
-    private int strNumber;
-    private int id;
+    private String id;
     private String name;
     private String description;
     private String slug;
     private String type;
-    private String parentFolder;
+    private String region;
     private String csvData;
 
     public OptionParserDo () {
     }
 
-    public OptionParserDo (String pathToOption, int id) {
+    public OptionParserDo (String pathToOption, String id) {
         this.pathToOption = pathToOption;
         this.id = id;
-    }
-
-    public int getStrNumber() {
-        return strNumber;
-    }
-
-    public void setStrNumber(int strNumber) {
-        this.strNumber = strNumber;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String name) throws Exception {
+        if(name.equals(""))
+            throw new Exception();
+        this.name = name.replace("\"", "\"\"");
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(String type) throws Exception  {
         if(type.contains("B2B")) {
             this.type = "b2b";
         } else if (type.contains("B2C")) {
             this.type = "b2c";
-        } else this.type = "";
+        } else this.type = null;
     }
 
     public String getPathToOption() {
@@ -63,11 +56,11 @@ public class OptionParserDo {
         this.pathToOption = pathToOption;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -75,7 +68,10 @@ public class OptionParserDo {
         return slug;
     }
 
-    public void setSlug(String slug) {
+    public void setSlug(String slug)  throws Exception {
+        if(slug.equals(""))
+            throw new Exception();
+        slug = slug.replace("\"", "\"\"");
         char [] slugArray = slug.toCharArray();
         if(slug.substring(slug.length() - 1, slug.length()).equals("/")) {
             String result = "";
@@ -94,20 +90,20 @@ public class OptionParserDo {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = new String(Base64.decodeBase64(description));;
+    public void setDescription(String description) throws Exception {
+        if(description.equals(""))
+            throw new Exception();
+        this.description = new String(Base64.decodeBase64(description)).replace("\"", "\"\"");
     }
 
-    public String getParentFolder() {
-        return parentFolder;
+    public String getRegion() {
+        return region;
     }
 
-    public void setParentFolder(String value) {
+    public void setRegion(String value) {
         if(value.equals("Мурманск") || value.equals("Мурманская область"))
-            this.parentFolder = "MURMANSK";
-        if(value.equals("Москва") || value.equals("Москва и Московская область"))
-            this.parentFolder = "MSK";
-        else this.parentFolder = null;
+            this.region = "MURMANSK";
+        else this.region = null;
     }
 
     public void setCsvData(String csvData) {

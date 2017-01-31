@@ -5,15 +5,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.TariffParserController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.NewsParserController">
     <children>
-        <Label layoutX="14.0" layoutY="14.0" opacity="0.5" text="Парсинг тарифов">
+        <Label layoutX="14.0" layoutY="14.0" opacity="0.5" text="Парсинг новостей">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
         <Label layoutX="15.0" layoutY="63.0" text="Путь до xlsx" />
-        <Button fx:id="btnParse" layoutX="12.0" layoutY="244.0" mnemonicParsing="false" onAction="#parseTariff" prefHeight="25.0" prefWidth="149.0" text="Распарсить" />
+        <Button fx:id="btnParse" layoutX="12.0" layoutY="244.0" mnemonicParsing="false" onAction="#parseNews" prefHeight="25.0" prefWidth="149.0" text="Распарсить" />
         <Separator layoutX="14.0" layoutY="280.0" prefHeight="1.0" prefWidth="617.0" />
         <TextArea fx:id="txtaResult" editable="false" layoutX="14.0" layoutY="294.0" prefHeight="305.0" prefWidth="617.0" text="" wrapText="true">
             <font>
@@ -23,5 +23,6 @@
       <TextField fx:id="txtfPathToXlsx" layoutX="15.0" layoutY="80.0" prefHeight="25.0" prefWidth="455.0" />
       <Label layoutX="13.0" layoutY="115.0" text="Начальный id" />
       <TextField fx:id="txtfStartId" layoutX="15.0" layoutY="135.0" prefHeight="25.0" prefWidth="455.0" />
+      <CheckBox fx:id="chbxIsFederal" layoutX="484.0" layoutY="84.0" mnemonicParsing="false" text="Федеральная новость" />
     </children>
 </AnchorPane>

@@ -37,7 +37,7 @@ public class TariffParserController extends BaseController {
             protected Object call() throws Exception {
                 disableElements(true);
 
-                txtaResult.setText(TariffParserSrv.parseTariff(new TariffParserDo(txtfPathToXlsx.getText(), Integer.parseInt(txtfStartId.getText()))).getCsvData());
+                txtaResult.setText(TariffParserSrv.parseTariff(new TariffParserDo(txtfPathToXlsx.getText(), txtfStartId.getText())).getCsvData());
 
                 disableElements(false);
                 isDone=true;
