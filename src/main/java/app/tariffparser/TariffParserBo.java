@@ -58,7 +58,7 @@ public class TariffParserBo {
             }
         }
         String result = "/atg/commerce/catalog/SecureProductCatalog:tariff, ,TIMEFORMAT=dd.MM.yyyy H:mm, ,LOCALE=ru_RU,\n" +
-                "ID,displayName,frontName,isArchive,isMigrated,migratedDescription,slug,clientType\n";
+                "ID,displayName,frontName,isArchive,isMigrated,migratedDescription,slug,clientType,childSKUs\n";
         for(TariffParserDo tariffParserDo : tariffParserDoList) {
             result += tariffParserDo.getId() +
                     ",\"" + tariffParserDo.getName() + "\"," +
@@ -66,8 +66,8 @@ public class TariffParserBo {
                     "true, true," +
                     "\"" + tariffParserDo.getDescription() + "\"," +
                     "\"" + tariffParserDo.getSlug() + "\"," +
-                    "\"" + tariffParserDo.getType() + "\"" +
-                    "\n";
+                    "\"" + tariffParserDo.getType() + "\"," +
+                    "sku70095\n";
         }
         result += "ERRORS ROW NUMBER: " + errorCounter;
         tariffDo.setCsvData(result);

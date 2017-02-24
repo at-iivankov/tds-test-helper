@@ -17,5 +17,6 @@
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml-schemas:3.11-beta2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:2.6.0" level="project" />
     <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.7.2" level="project" />
   </component>
 </module>

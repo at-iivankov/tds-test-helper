@@ -101,8 +101,8 @@ public class TariffParserDo {
     }
 
     public void setRegion(String value) {
-        if(value.equals("Мурманск") || value.equals("Мурманская область"))
-            this.region = "MURMANSK";
+        if(value.equals("Москва") || value.equals("Москва и Московская область"))
+            this.region = "MSK";
         else this.region = null;
     }
 

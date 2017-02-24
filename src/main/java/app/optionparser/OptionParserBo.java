@@ -57,7 +57,7 @@ public class OptionParserBo {
             }
         }
         String result = "/atg/commerce/catalog/SecureProductCatalog:option, ,TIMEFORMAT=dd.MM.yyyy H:mm, ,LOCALE=ru_RU,\n" +
-                "ID,displayName,frontName,isArchive,isMigrated,migratedDescription,slug,clientType\n";
+                "ID,displayName,frontName,isArchive,isMigrated,migratedDescription,slug,clientType,childSKUs\n";
         for(OptionParserDo tariffParserDo : optionParserDoList) {
             result += tariffParserDo.getId() +
                     ",\"" + tariffParserDo.getName() + "\"," +
@@ -65,8 +65,8 @@ public class OptionParserBo {
                     "true, true," +
                     "\"" + tariffParserDo.getDescription() + "\"," +
                     "\"" + tariffParserDo.getSlug() + "\"," +
-                    "\"" + tariffParserDo.getType() + "\"" +
-                    "\n";
+                    "\"" + tariffParserDo.getType() + "\"," +
+                    "sku70095\n";
         }
         result += "ERRORS ROW NUMBER: " + errorCounter;
         optionDo.setCsvData(result);

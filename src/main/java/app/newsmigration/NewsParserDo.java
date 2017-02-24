@@ -1,6 +1,8 @@
 package app.newsmigration;
 
 import org.apache.commons.codec.binary.Base64;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -104,25 +106,6 @@ public class NewsParserDo {
         Date date = formatter.parse("01." + month + "." + year + " 00:00");
         formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         this.postDate = formatter.format(date);
-
-
-
-//        try {
-//            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
-//            Date date = formatter.parse(postDate);
-//            formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-//            this.postDate = formatter.format(date);
-//        } catch (Exception e) {
-//            try {
-//                SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-//                Date date = formatter.parse(postDate);
-//                formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-//                this.postDate = formatter.format(date);
-//            } catch (Exception ex) {
-//                this.postDate = "";
-//            }
-//        }
-
     }
 
     public String getName() {
@@ -150,7 +133,8 @@ public class NewsParserDo {
     }
 
     public void setDescription(String description) throws Exception {
-        this.description = new String(Base64.decodeBase64(description)).replace("\"", "\"\"");
+        // Удаляем все html - тэги из описания
+        this.description = Jsoup.clean(new String(Base64.decodeBase64(description)).replace("\"", "\"\""), Whitelist.none());
     }
 
     public String getSiteIds() throws Exception {
@@ -161,10 +145,28 @@ public class NewsParserDo {
         if(value.equals(""))
             throw new Exception();
         if(this.isFederal)
-            this.siteIds = "siteMURMANSK";
+            this.siteIds = "siteMSK, siteSPB, siteMURMANSK, siteNOVGOROD, siteARH, siteKALININGRAD, sitePSKOV, siteKARELIA, siteVOLOGDA, siteKOMI";
         else {
-            if (value.equals("Мурманск") || value.equals("Мурманская область"))
+            if (value.equals("Москва") || value.equals("Москва и Московская область"))
+                this.siteIds = "siteMSK";
+            else if (value.equals("Санкт-Петербург") || value.equals("Санкт-Петербург и Ленинградская область"))
+                this.siteIds = "siteSPB";
+            else if (value.equals("Мурманса") || value.equals("Мурманская область"))
                 this.siteIds = "siteMURMANSK";
+            else if (value.equals("Новгород") || value.equals("Новгородская область"))
+                this.siteIds = "siteNOVGOROD";
+            else if (value.equals("Архангельск") || value.equals("Архангельская область"))
+                this.siteIds = "siteARH";
+            else if (value.equals("Калининград") || value.equals("Калининградская область"))
+                this.siteIds = "siteKALININGRAD";
+            else if (value.equals("Псков") || value.equals("Псковская область"))
+                this.siteIds = "sitePSKOV";
+            else if (value.equals("Карелия") || value.equals("Республика Карелия"))
+                this.siteIds = "siteKARELIA";
+            else if (value.equals("Вологда") || value.equals("Вологодская область"))
+                this.siteIds = "siteVOLOGDA";
+            else if (value.equals("Коми") || value.equals("Республика Коми"))
+                this.siteIds = "siteKOMI";
             else this.siteIds = null;
         }
     }

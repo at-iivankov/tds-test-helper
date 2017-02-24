@@ -75,6 +75,8 @@ public class TestCaseFormatterBo {
         text = text.replace("То ", "*То* ");
         text = text.replace("К тому же ", "*К тому же* ");
         text = text.replace("Также ", "*Также* ");
+        text = text.replace("А ", "*А* ");
+        text = text.replace("Допустим ", "*Допустим* ");
         text = text.replace("И ", "*И* ");
         text = text.replace("Примеры:", "*Примеры:*");
         return text;
