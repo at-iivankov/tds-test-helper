@@ -46,8 +46,11 @@ public class MainApp extends Application {
         Tab tabTariffParser = new Tab ("PARSE TARIFF");
         Parent rootTariffParser = FXMLLoader.load(getClass().getResource("/fxml/tariffparser.fxml"));
         tabTariffParser.setContent(rootTariffParser);
+        Tab tabEmailParser = new Tab ("PARSE EMAIL");
+        Parent rootEmailParser = FXMLLoader.load(getClass().getResource("/fxml/emailparser.fxml"));
+        tabEmailParser.setContent(rootEmailParser);
 
-        tabPane.getTabs().addAll(tabTestCaseFormatter, tabReportParser, tabOfficeParser, tabNewsParser, tabTariffParser, tabOptionParser);
+        tabPane.getTabs().addAll(tabTestCaseFormatter, tabReportParser, tabOfficeParser, tabNewsParser, tabTariffParser, tabOptionParser, tabEmailParser);
         Scene scene = new Scene(tabPane, 630, 630);
         stage.setScene(scene);
         stage.show();

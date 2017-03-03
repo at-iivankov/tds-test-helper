@@ -1,7 +1,7 @@
 package app.controllers;
 
-import app.reportparser.ReportParserDo;
-import app.reportparser.ReportParserSrv;
+import app.report.parser.ReportParserDo;
+import app.report.parser.ReportParserSrv;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

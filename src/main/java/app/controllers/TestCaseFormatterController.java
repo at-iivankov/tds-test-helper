@@ -1,7 +1,7 @@
 package app.controllers;
 
-import app.testcaseformatter.TestCaseFormatterDo;
-import app.testcaseformatter.TestCaseFormatterSrv;
+import app.testcase.formatter.TestCaseFormatterDo;
+import app.testcase.formatter.TestCaseFormatterSrv;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

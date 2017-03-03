@@ -1,7 +1,7 @@
 package app.controllers;
 
-import app.tariffparser.TariffParserDo;
-import app.tariffparser.TariffParserSrv;
+import app.tariff.parser.TariffParserDo;
+import app.tariff.parser.TariffParserSrv;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
