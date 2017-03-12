@@ -91,21 +91,36 @@ public class NewsParserDo {
         return postDate;
     }
 
-    public void setPostDate(String value)  throws Exception {
-        if(value.equals(""))
+    public void setPostDate(String postDateStr, String url)  throws Exception {
+        if(url.equals("") || postDateStr.equals(""))
             throw new Exception();
+
+        SimpleDateFormat formatter = null;
+
+        if(postDateStr.matches("^[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{1,2}:[0-9]{2}:[0-9]{2}$"))
+            formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        else if(postDateStr.matches("^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}$"))
+            formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        else throw new Exception();
+
+        Date date = formatter.parse(postDateStr);
+
         Pattern p = Pattern.compile("^(.+)\\/news\\/(.+?)\\/(.+?)\\/.*$");
-        Matcher m = p.matcher(value);
+        Matcher m = p.matcher(url);
         String year = "";
         String month = "";
         if (m.find()) {
             year = m.group(2).toString();
             month = m.group(3).toString();
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        Date date = formatter.parse("01." + month + "." + year + " 00:00");
+
         formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        this.postDate = formatter.format(date);
+
+        if(((date.getYear() + 1900) == Integer.parseInt(year)) && ((date.getMonth() + 1) == Integer.parseInt(month)))
+            this.postDate = formatter.format(date);
+        else {
+            this.postDate = formatter.format(formatter.parse("01." + month + "." + year + " 00:00"));
+        }
     }
 
     public String getName() {
@@ -145,7 +160,7 @@ public class NewsParserDo {
         if(value.equals(""))
             throw new Exception();
         if(this.isFederal)
-            this.siteIds = "siteMSK, siteSPB, siteMURMANSK, siteNOVGOROD, siteARH, siteKALININGRAD, sitePSKOV, siteKARELIA, siteVOLOGDA, siteKOMI";
+            this.siteIds = "siteMSK, siteSPB, siteMURMANSK, siteNOVGOROD, siteARH, siteKALININGRAD, sitePSKOV, siteKARELIA, siteVOLOGDA, siteKOMI, siteTVER, siteVLADIMIR, siteKOSTROMA, siteRYAZAN, siteSMOLENSK, siteKALUGA, siteTULA";
         else {
             if (value.equals("Москва") || value.equals("Москва и Московская область"))
                 this.siteIds = "siteMSK";

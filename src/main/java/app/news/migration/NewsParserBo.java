@@ -47,7 +47,7 @@ public class NewsParserBo {
                 newsParserDo.setBody(row[3]);
                 newsParserDo.setDescription(row[4]);
                 newsParserDo.setSlug(row[6]);
-                newsParserDo.setPostDate(row[6]);
+                newsParserDo.setPostDate(row[1], row[6]);
                 newsParserDo.setFederal(newsData.isFederal());
                 newsParserDo.setSiteIds(row[7]);
                 if(newsParserDo.getSiteIds() != null) {
@@ -67,7 +67,7 @@ public class NewsParserBo {
                     "\"" + newsParserDo.getHeadline() + "\"," +
                     "\"" + newsParserDo.getBody() + "\"," +
                     ((newsParserDo.getDescription().equals("")) ? "," : "\"" + newsParserDo.getDescription() + "\",") +
-                    "\"" + newsParserDo.getPostDate()    + "\"," +
+                    "\"" + newsParserDo.getPostDate() + "\"," +
                     "\"" + newsParserDo.getSiteIds() + "\"," +
                     "\"" + newsParserDo.getSlug() + "\"," +
                     newsParserDo.isFederal() +
