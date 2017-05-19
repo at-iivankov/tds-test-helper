@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
  */
 public class TariffParserController extends BaseController {
 
-    @FXML public TextField txtfPathToXlsx;
+    @FXML public TextField txtfPathToCsv;
     @FXML public TextField txtfStartId;
     @FXML public Button btnParse;
     @FXML public TextArea txtaResult;;
@@ -37,7 +37,7 @@ public class TariffParserController extends BaseController {
             protected Object call() throws Exception {
                 disableElements(true);
 
-                txtaResult.setText(TariffParserSrv.parseTariff(new TariffParserDo(txtfPathToXlsx.getText(), txtfStartId.getText())).getCsvData());
+                txtaResult.setText(TariffParserSrv.parseTariff(new TariffParserDo(txtfPathToCsv.getText(), txtfStartId.getText())).getCsvData());
 
                 disableElements(false);
                 isDone=true;
@@ -48,7 +48,7 @@ public class TariffParserController extends BaseController {
     }
 
     private void disableElements(boolean isDisable) {
-        txtfPathToXlsx.setDisable(isDisable);
+        txtfPathToCsv.setDisable(isDisable);
         txtfStartId.setDisable(isDisable);
         btnParse.setDisable(isDisable);
         txtaResult.setDisable(isDisable);

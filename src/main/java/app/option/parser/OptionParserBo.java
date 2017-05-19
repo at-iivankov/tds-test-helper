@@ -15,7 +15,7 @@ public class OptionParserBo {
         String csvFile = optionDo.getPathToOption();
         String line = "";
         String cvsSplitBy = ";";
-        String idPrefix = "m_option";
+        String idPrefix = "m_b2b_option";
         int idCounter = Integer.parseInt(optionDo.getId());
         int columnCount = 5;
         int rowCounter = 0;
@@ -41,13 +41,13 @@ public class OptionParserBo {
                 continue;
             }
             try {
-                optionParserDo.setId(idPrefix + idCounter);
                 optionParserDo.setName(row[0]);
                 optionParserDo.setDescription(row[1]);
                 optionParserDo.setSlug(row[2]);
                 optionParserDo.setType(row[3]);
                 optionParserDo.setRegion(row[4]);
                 if(optionParserDo.getRegion() != null && optionParserDo.getType() != null) {
+                    optionParserDo.setId(idPrefix + optionParserDo.getRegion() + idCounter);
                     optionParserDoList.add(optionParserDo);
                     idCounter++;
                 } else continue;
@@ -58,14 +58,17 @@ public class OptionParserBo {
         }
         String result = "/atg/commerce/catalog/SecureProductCatalog:option, ,TIMEFORMAT=dd.MM.yyyy H:mm, ,LOCALE=ru_RU,\n" +
                 "ID,displayName,frontName,isArchive,isMigrated,migratedDescription,slug,clientType,childSKUs\n";
-        for(OptionParserDo tariffParserDo : optionParserDoList) {
-            result += tariffParserDo.getId() +
-                    ",\"" + tariffParserDo.getName() + "\"," +
-                    "\"" + tariffParserDo.getName() + "\"," +
+        for(OptionParserDo optionParserDo : optionParserDoList) {
+            //TODO: временно, для переноса b2b
+            if(optionParserDo.getType().equals("b2c"))
+                continue;
+            result += optionParserDo.getId() +
+                    ",\"" + optionParserDo.getName() + "\"," +
+                    "\"" + optionParserDo.getName() + "\"," +
                     "true, true," +
-                    "\"" + tariffParserDo.getDescription() + "\"," +
-                    "\"" + tariffParserDo.getSlug() + "\"," +
-                    "\"" + tariffParserDo.getType() + "\"," +
+                    "\"" + optionParserDo.getDescription() + "\"," +
+                    "\"" + optionParserDo.getSlug() + "\"," +
+                    "\"" + optionParserDo.getType() + "\"," +
                     "sku70095\n";
         }
         result += "ERRORS ROW NUMBER: " + errorCounter;

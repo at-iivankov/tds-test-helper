@@ -12,7 +12,7 @@
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label layoutX="15.0" layoutY="63.0" text="Путь до xlsx" />
+        <Label layoutX="15.0" layoutY="63.0" text="Путь до csv" />
         <Button fx:id="btnParse" layoutX="12.0" layoutY="244.0" mnemonicParsing="false" onAction="#parseTariff" prefHeight="25.0" prefWidth="149.0" text="Распарсить" />
         <Separator layoutX="14.0" layoutY="280.0" prefHeight="1.0" prefWidth="617.0" />
         <TextArea fx:id="txtaResult" editable="false" layoutX="14.0" layoutY="294.0" prefHeight="305.0" prefWidth="617.0" text="" wrapText="true">
@@ -20,7 +20,7 @@
                 <Font name="Times New Roman" size="14.0" />
             </font></TextArea>
         <ProgressIndicator fx:id="piIndicator" layoutX="557.0" layoutY="21.0" opacity="0.5" progress="0.0" />
-      <TextField fx:id="txtfPathToXlsx" layoutX="15.0" layoutY="80.0" prefHeight="25.0" prefWidth="455.0" />
+      <TextField fx:id="txtfPathToCsv" layoutX="15.0" layoutY="80.0" prefHeight="25.0" prefWidth="455.0" />
       <Label layoutX="13.0" layoutY="115.0" text="Начальный id" />
       <TextField fx:id="txtfStartId" layoutX="15.0" layoutY="135.0" prefHeight="25.0" prefWidth="455.0" />
     </children>

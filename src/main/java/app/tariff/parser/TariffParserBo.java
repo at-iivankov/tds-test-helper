@@ -16,7 +16,7 @@ public class TariffParserBo {
         String csvFile = tariffDo.getPathToTariff();
         String line = "";
         String cvsSplitBy = ";";
-        String idPrefix = "m_tariff";
+        String idPrefix = "m_b2b_tariff";
         int idCounter = Integer.parseInt(tariffDo.getId());
         int columnCount = 5;
         int rowCounter = 0;
@@ -25,7 +25,7 @@ public class TariffParserBo {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(csvFile));
         List<TariffParserDo> tariffParserDoList = new ArrayList<TariffParserDo>();
         while ((line = bufferedReader.readLine()) != null) {
-            if(rowCounter == 0) {
+            if (rowCounter == 0) {
                 rowCounter++;
                 continue;
             }
@@ -37,29 +37,32 @@ public class TariffParserBo {
             } catch (Exception e) {
                 continue;
             }
-            if(row == null || row.length != columnCount) {
+            if (row == null || row.length != columnCount) {
                 errorCounter += rowCounter + ", ";
                 continue;
             }
             try {
-                tariffParserDo.setId(idPrefix + idCounter);
                 tariffParserDo.setName(row[0]);
                 tariffParserDo.setDescription(row[1]);
                 tariffParserDo.setSlug(row[2]);
                 tariffParserDo.setType(row[3]);
                 tariffParserDo.setRegion(row[4]);
-                if(tariffParserDo.getRegion() != null && tariffParserDo.getType() != null) {
+                if (tariffParserDo.getRegion() != null && tariffParserDo.getType() != null) {
+                    tariffParserDo.setId(idPrefix + tariffParserDo.getRegion() + idCounter);
                     tariffParserDoList.add(tariffParserDo);
                     idCounter++;
                 } else continue;
-            }catch (Exception e) {
+            } catch (Exception e) {
                 errorCounter += rowCounter + ", ";
                 continue;
             }
         }
         String result = "/atg/commerce/catalog/SecureProductCatalog:tariff, ,TIMEFORMAT=dd.MM.yyyy H:mm, ,LOCALE=ru_RU,\n" +
-                "ID,displayName,frontName,isArchive,isMigrated,migratedDescription,slug,clientType,childSKUs\n";
-        for(TariffParserDo tariffParserDo : tariffParserDoList) {
+                "ID,displayName,frontName,isArchive,isMigrated,migratedDescription,slug,clientType,rgb,childSKUs\n";
+        for (TariffParserDo tariffParserDo : tariffParserDoList) {
+            //TODO: временно, для переноса b2b
+            if(tariffParserDo.getType().equals("b2c"))
+                continue;
             result += tariffParserDo.getId() +
                     ",\"" + tariffParserDo.getName() + "\"," +
                     "\"" + tariffParserDo.getName() + "\"," +
@@ -67,6 +70,7 @@ public class TariffParserBo {
                     "\"" + tariffParserDo.getDescription() + "\"," +
                     "\"" + tariffParserDo.getSlug() + "\"," +
                     "\"" + tariffParserDo.getType() + "\"," +
+                    "\"000000\"," +
                     "sku70095\n";
         }
         result += "ERRORS ROW NUMBER: " + errorCounter;

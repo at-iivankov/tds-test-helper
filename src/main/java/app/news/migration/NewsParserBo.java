@@ -60,9 +60,10 @@ public class NewsParserBo {
             }
         }
         String result = "/atg/content/SecureContentManagementRepository:newsArticle, ,TIMEFORMAT=dd.MM.yyyy H:mm, ,LOCALE=ru_RU,\n" +
-                "ID,name,headline,body,abstract,postDate,siteIds,slug,isFederal\n";
+                "ID,displayName,name,headline,body,abstract,postDate,siteIds,slug,isFederal\n";
         for(NewsParserDo newsParserDo : newsParserDoList) {
             result += newsParserDo.getId() +
+                    ",\"" + newsParserDo.getName() + "\"" +
                     ",\"" + newsParserDo.getName() + "\"," +
                     "\"" + newsParserDo.getHeadline() + "\"," +
                     "\"" + newsParserDo.getBody() + "\"," +

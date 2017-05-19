@@ -28,7 +28,15 @@ public class EmailParserBo {
             emailParserDo.setEmail(row[0]);
             emailParserDo.setSubscriptionDate(row[1]);
             emailParserDo.setSiteId(row[2]);
-            emailParserDoList.add(emailParserDo);
+            boolean isContain = false;
+            for(EmailParserDo emailDo : emailParserDoList) {
+                if (emailParserDo.getEmail().equals(emailDo.getEmail()) && emailParserDo.getSiteId().equals(emailDo.getSiteId())) {
+                    isContain = true;
+                    break;
+                }
+            }
+            if(!isContain)
+                emailParserDoList.add(emailParserDo);
         }
 
         for(EmailParserDo emailParserDo : emailParserDoList) {
