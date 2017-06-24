@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.PhotoArticlesParserController">
+    <children>
+        <Label layoutX="14.0" layoutY="14.0" opacity="0.5" text="Парсинг статей фотоальбома">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="15.0" layoutY="63.0" text="Путь до xml со статьями фотоальбома" />
+        <Button fx:id="btnParse" layoutX="12.0" layoutY="244.0" mnemonicParsing="false" onAction="#parsePhotoArticles" prefHeight="25.0" prefWidth="149.0" text="Распарсить" />
+        <Separator layoutX="14.0" layoutY="280.0" prefHeight="1.0" prefWidth="617.0" />
+        <ProgressIndicator fx:id="piIndicator" layoutX="557.0" layoutY="21.0" opacity="0.5" progress="0.0" />
+      <TextField fx:id="txtfPathToPhotoArticlesXml" layoutX="15.0" layoutY="80.0" prefHeight="25.0" prefWidth="455.0" />
+      <Label layoutX="15.0" layoutY="106.0" text="Путь до csv map id" />
+      <TextField fx:id="txtfPathToIdMapCsv" layoutX="15.0" layoutY="122.0" prefHeight="25.0" prefWidth="455.0" />
+      <TextArea fx:id="txtaResult" editable="false" layoutX="14.0" layoutY="292.0" prefHeight="305.0" prefWidth="617.0" text="" wrapText="true">
+         <font>
+            <Font name="Times New Roman" size="14.0" />
+         </font>
+      </TextArea>
+    </children>
+</AnchorPane>

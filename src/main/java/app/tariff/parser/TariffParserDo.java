@@ -68,14 +68,14 @@ public class TariffParserDo {
         return slug;
     }
 
-    public void setSlug(String slug)  throws Exception {
-        if(slug.equals(""))
+    public void setSlug(String slug) throws Exception {
+        if (slug.equals(""))
             throw new Exception();
         slug = slug.replace("\"", "\"\"");
-        char [] slugArray = slug.toCharArray();
-        if(slug.substring(slug.length() - 1, slug.length()).equals("/")) {
+        char[] slugArray = slug.toCharArray();
+        if (slug.substring(slug.length() - 1, slug.length()).equals("/")) {
             String result = "";
-            for(int i = slug.length() - 2; i >= 0; i--) {
+            for (int i = slug.length() - 2; i >= 0; i--) {
                 if (slugArray[i] == '/')
                     break;
                 result += slugArray[i];

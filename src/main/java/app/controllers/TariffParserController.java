@@ -22,7 +22,7 @@ public class TariffParserController extends BaseController {
     @FXML public TextField txtfPathToCsv;
     @FXML public TextField txtfStartId;
     @FXML public Button btnParse;
-    @FXML public TextArea txtaResult;;
+    @FXML public TextArea txtaResult;
 
     public void initialize(URL location, ResourceBundle resources) {
     }
