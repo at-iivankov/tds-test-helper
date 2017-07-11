@@ -39,9 +39,9 @@ public class PhotoArticlesParserController extends BaseController {
                 disableElements(true);
 
                 try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                        new FileOutputStream("D:/news.txt"), "utf-8"))) {
+                        new FileOutputStream("D:/photos.csv"), "utf-8"))) {
                     writer.write(PhotoArticlesParserSrv.parse(new PhotoArticlesParserDo(txtfPathToPhotoArticlesXml.getText(), txtfPathToIdMapCsv.getText())).getCsvData());
-                    txtaResult.setText("SUCCESS: D:/news.txt");
+                    txtaResult.setText("SUCCESS: D:/photos.csv");
                 } catch (Exception e) {
                     txtaResult.setText("FAIL");
                 }

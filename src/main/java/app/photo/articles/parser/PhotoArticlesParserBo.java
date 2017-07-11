@@ -24,58 +24,89 @@ import java.util.Map;
 public class PhotoArticlesParserBo {
 
     public PhotoArticlesParserDo parse(PhotoArticlesParserDo photoArticlesParserDo) throws Exception {
+
         // TODO: заменить путь на переданный с формы после тестирования
-        File inputFile = new File("D://test.xml");
+        File inputFile = new File("D://gallery.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(inputFile);
         doc.getDocumentElement().normalize();
 
         List<PhotoArticle> photoArticleList = new ArrayList<>();
-
+        String photoArticlePrefix = "articleMgrPhoto";
+        String imgPrefix = "imgMgrPhoto";
+        int photoArticleCounter = 1;
+        int imgCounter = 1;
         NodeList photoArticles = doc.getElementsByTagName("photoArticle");
         for (int i = 0; i < photoArticles.getLength(); i++) {
             PhotoArticle photoArticle = new PhotoArticle();
             Node photoArticleNode = photoArticles.item(i);
             Element photoArticleElement = (Element) photoArticleNode;
+            photoArticle.setArticleId(photoArticlePrefix + photoArticleCounter);
             photoArticle.setName(photoArticleElement.getElementsByTagName("name").item(0).getTextContent());
             photoArticle.setDate(photoArticleElement.getElementsByTagName("date").item(0).getTextContent());
             photoArticle.setSite(photoArticleElement.getElementsByTagName("region").item(0).getTextContent());
             photoArticle.setSlug(photoArticleElement.getElementsByTagName("url").item(0).getTextContent());
             NodeList images = ((Element) photoArticleNode).getElementsByTagName("image");
+            if(images.getLength() == 0) {
+                //imgCounter++;
+                continue;
+            }
             for (int j = 0; j < images.getLength(); j++) {
-                photoArticle.setImagesId(images.item(j).getTextContent());
+                if(images.item(j).getTextContent().equals("")) {
+                    imgCounter++;
+                    continue;
+                }
+                photoArticle.setImagesId(imgPrefix + imgCounter);
+                imgCounter ++;
             }
             photoArticleList.add(photoArticle);
+            photoArticleCounter ++;
         }
         photoArticlesParserDo.setCsvData(getCsvData(photoArticleList));
         return photoArticlesParserDo;
     }
 
-    // TODO: уточнить названия полей и формат даты
     private String getCsvData(List<PhotoArticle> photoArticleList){
-        String idPrefix = "photoArticle";
-        int startId = 1000;
-        String result = "/atg/commerce/catalog/SecureProductCatalog:tariff, ,TIMEFORMAT=dd.MM.yyyy H:mm, ,LOCALE=ru_RU,\n" +
-                "ID,slug,name,date,images\n";
+        String result = "/atg/content/SecureContentManagementRepository:photoArticle, ,TIMEFORMAT=dd.MM.yyyy H:mm, ,LOCALE=ru_RU,\n" +
+                "ID,displayName,name,postDate,headline,parentFolder,siteIds,slug,mediaContents\n";
         for(PhotoArticle photoArticle : photoArticleList) {
-            result += idPrefix + startId + ",";
-            result += photoArticle.getSlug() + ",";
-            result += photoArticle.getName() + ",";
-            result += photoArticle.getDate() + ",";
-            result += photoArticle.getImagesId() + "\n";
-            startId++;
+            for(String imageId : photoArticle.getImagesId()) {
+                result += imageId + ", " + photoArticle.getSite() + "\n";
+            }
+
+//            result += "\"" + photoArticle.getArticleId() + "\",";
+//            result += "\"" + photoArticle.getName() + "\",";
+//            result += "\"" + photoArticle.getName() + "\",";
+//            result += photoArticle.getDate() + ",";
+//            result += "\"" + photoArticle.getName() + "\",";
+//            result += "fldr1803"  + ",";
+//            result += photoArticle.getSite() + ",";
+//            result += photoArticle.getSlug() + ",";
+//            result += "\"" + photoArticle.getImagesId() + "\"\n";
         }
         return result;
     }
 
-    private static class PhotoArticle {
+    private class PhotoArticle {
+        private String articleId;
         private String name;
         private String date;
         private String site;
         private String slug;
         private List<String> imagesId;
-        private static Map<String, String> ID_MAP;
+
+        public PhotoArticle() {
+            imagesId = new ArrayList<>();
+        }
+
+        public String getArticleId() {
+            return articleId;
+        }
+
+        public void setArticleId(String articleId) {
+            this.articleId = articleId;
+        }
 
         public String getName() {
             return name;
@@ -94,7 +125,6 @@ public class PhotoArticlesParserBo {
             if(dateStr.matches("^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$"))
                 formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             else throw new Exception();
-            // TODO: продумать исключения
 
             Date date = formatter.parse(dateStr);
             formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -108,8 +138,8 @@ public class PhotoArticlesParserBo {
         public void setSite(String site) {
             // TODO: должно ли значение site заполняться всеми siteID, если site = siteFEDERAL
             // TODO: уточнить количество регионов и их siteID для заполнения site
-            if(site.equals("siteFEDERAL"))
-                this.site = "Все siteID";
+            if(site.equals("teFEDERAL"))
+                this.site = "";
             else this.site = site;
         }
 
@@ -118,7 +148,7 @@ public class PhotoArticlesParserBo {
         }
 
         public void setSlug(String slug) {
-            // TODO: уточнить такие ли должны быть skug-и
+            // TODO: уточнить такие ли должны быть slug-и
             char[] slugArray = slug.toCharArray();
             if (slug.substring(slug.length() - 1, slug.length()).equals("/")) {
                 String result = "";
@@ -131,44 +161,17 @@ public class PhotoArticlesParserBo {
             } else this.slug = "";
         }
 
-        public String getImagesId() {
-            String imagesIdStr = "";
-            for(String imageId : imagesId) {
-                imageId += imagesId + ",";
-            }
-            return (imagesIdStr.length() > 2) ? imagesIdStr.substring(0, imagesIdStr.length() - 1) : "";
+        public List<String> getImagesId() {
+//            String imagesIdStr = "";
+//            for(String imageId : imagesId) {
+//                imagesIdStr += imageId + ",";
+//            }
+//            return (imagesIdStr.length() > 2) ? imagesIdStr.substring(0, imagesIdStr.length() - 1) : "";
+            return imagesId;
         }
 
-        public void setImagesId(String imageUrl) throws IOException {
-            // TODO: необходима выгрузка csv из bcc и преобразование
-            String imageName;
-            char[] imageUrlArray = imageUrl.toCharArray();
-            if (imageUrl.contains("/")) {
-                String result = "";
-                for (int i = imageUrl.length() - 1; i >= 0; i--) {
-                    if (imageUrlArray[i] == '/')
-                        break;
-                    result += imageUrlArray[i];
-                }
-                imageName = new StringBuilder(result).reverse().toString();
-            } else imageName = "";
-            setMapId();
-            /*
-            Предполагается следующее:
-            1) столбцы выгруженного из bcc файла должны быть в следующем порядке: url,id
-            2) в файле нет строк, кроме последовательнсоти url,id
-            3) последовательность url,id разделяется символом "," без пробелов
-             */
-            this.imagesId.add(ID_MAP.get(imageName));
-        }
-
-        private void setMapId() throws IOException {
-            String line;
-            // TODO: заменить путь на переданный с формы после тестирования
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("D://test1.csv"));
-            while ((line = bufferedReader.readLine()) != null) {
-                ID_MAP.put(line.split(",")[0], line.split(",")[1]);
-            }
+        public void setImagesId(String imgId) throws IOException {
+            imagesId.add(imgId);
         }
     }
 }
