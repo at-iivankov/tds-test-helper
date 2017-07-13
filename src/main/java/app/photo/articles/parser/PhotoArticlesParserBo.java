@@ -26,7 +26,7 @@ public class PhotoArticlesParserBo {
     public PhotoArticlesParserDo parse(PhotoArticlesParserDo photoArticlesParserDo) throws Exception {
 
         // TODO: заменить путь на переданный с формы после тестирования
-        File inputFile = new File("D://gallery.xml");
+        File inputFile = new File(photoArticlesParserDo.getPathToPhotoArticlesXml());
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(inputFile);
@@ -69,21 +69,17 @@ public class PhotoArticlesParserBo {
 
     private String getCsvData(List<PhotoArticle> photoArticleList){
         String result = "/atg/content/SecureContentManagementRepository:photoArticle, ,TIMEFORMAT=dd.MM.yyyy H:mm, ,LOCALE=ru_RU,\n" +
-                "ID,displayName,name,postDate,headline,parentFolder,siteIds,slug,mediaContents\n";
+                "ID,displayName,name,postDate,headline,parentFolder,siteIds,slug,relatedMedia\n";
         for(PhotoArticle photoArticle : photoArticleList) {
-            for(String imageId : photoArticle.getImagesId()) {
-                result += imageId + ", " + photoArticle.getSite() + "\n";
-            }
-
-//            result += "\"" + photoArticle.getArticleId() + "\",";
-//            result += "\"" + photoArticle.getName() + "\",";
-//            result += "\"" + photoArticle.getName() + "\",";
-//            result += photoArticle.getDate() + ",";
-//            result += "\"" + photoArticle.getName() + "\",";
-//            result += "fldr1803"  + ",";
-//            result += photoArticle.getSite() + ",";
-//            result += photoArticle.getSlug() + ",";
-//            result += "\"" + photoArticle.getImagesId() + "\"\n";
+            result += "\"" + photoArticle.getArticleId() + "\",";
+            result += "\"" + photoArticle.getName().replace("\"", "\"\"") + "\",";
+            result += "\"" + photoArticle.getName().replace("\"", "\"\"") + "\",";
+            result += photoArticle.getDate() + ",";
+            result += "\"" + photoArticle.getName().replace("\"", "\"\"") + "\",";
+            result += "fldr1803"  + ",";
+            result += photoArticle.getSite() + ",";
+            result += photoArticle.getSlug() + ",";
+            result += "\"" + photoArticle.getImagesId() + "\"\n";
         }
         return result;
     }
@@ -136,8 +132,6 @@ public class PhotoArticlesParserBo {
         }
 
         public void setSite(String site) {
-            // TODO: должно ли значение site заполняться всеми siteID, если site = siteFEDERAL
-            // TODO: уточнить количество регионов и их siteID для заполнения site
             if(site.equals("teFEDERAL"))
                 this.site = "";
             else this.site = site;
@@ -148,7 +142,6 @@ public class PhotoArticlesParserBo {
         }
 
         public void setSlug(String slug) {
-            // TODO: уточнить такие ли должны быть slug-и
             char[] slugArray = slug.toCharArray();
             if (slug.substring(slug.length() - 1, slug.length()).equals("/")) {
                 String result = "";
@@ -161,13 +154,12 @@ public class PhotoArticlesParserBo {
             } else this.slug = "";
         }
 
-        public List<String> getImagesId() {
-//            String imagesIdStr = "";
-//            for(String imageId : imagesId) {
-//                imagesIdStr += imageId + ",";
-//            }
-//            return (imagesIdStr.length() > 2) ? imagesIdStr.substring(0, imagesIdStr.length() - 1) : "";
-            return imagesId;
+        public String getImagesId() {
+            String imagesIdStr = "";
+            for(String imageId : imagesId) {
+                imagesIdStr += imageId + ",";
+            }
+            return (imagesIdStr.length() > 2) ? imagesIdStr.substring(0, imagesIdStr.length() - 1) : "";
         }
 
         public void setImagesId(String imgId) throws IOException {
